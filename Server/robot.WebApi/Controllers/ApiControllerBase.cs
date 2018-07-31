@@ -14,7 +14,7 @@ namespace robot.WebApi.Controllers
 {
     public class ApiControllerBase: Controller
     {
-        // <summary>
+        /// <summary>
         /// Manuseia o callback. Valida se é necessário retornar erro ou o próprio TSuccess
         /// </summary> 
         /// <typeparam name="TFailure"></typeparam>
