@@ -7,14 +7,14 @@
 </div>
 <div class="row wrapper wrapper-content animated fadeInRight">
     <div class="col-lg-12">
-        <div class="ibox float-e-margins">
-            <div class="ibox-title">
-                <h5>Status atual do Robo: </h5>
-                <div>&nbsp;&nbsp;{{robot.name + ' (' + robot.id + ')'}}</div>
-            </div>
-            <div class="ibox-content">
-
-                <div>
+      <div>
+          <div class="ibox float-e-margins">
+              <div class="ibox-title">
+                  <h5>Status atual do Robo: <small>{{robot.name + ' (' + robot.id + ')'}}</small></h5>
+              </div>
+              <div class="ibox-content">
+                <div class="row">
+                  <div class="col-lg-4">
                     <p>
                             Alinhamento da Cabeça: <code> {{robot.headAlign | headAlign}} </code>
                     </p>
@@ -45,14 +45,105 @@
                     </p>
                     <button (click)="moveRightWristToLeft()" class="btn btn-default  dim " title="Mover p/ Esquerda" type="button"><i class="fa fa-arrow-left"></i></button>
                     <button (click)="moveRightWristToRight()" class="btn btn-default  dim " title="Mover p/ Direita" type="button"><i class="fa fa-arrow-right"></i></button>
-
+                    <p></p>
+                    <br/>
+                    <br/>
+                    <button  [routerLink]="['/']" class="btn btn-danger" type="button">Voltar</button>
+                  </div>
+                  <div class="col-lg-4">
+                    <div class="row text-center">
+                      <h5>Interação com o Robo</h5>
+                      <small>(Coming Soon)</small>
+                      <br/>
+                      <div>
+                          <img alt="OPTIMUS PRIME: Vector-Based" src="https://i.pinimg.com/736x/80/10/2f/80102f5188e4b88b330ab3642afd58dd.jpg"
+                            style="transition: opacity 0.04s linear; border-radius: 8px; opacity: 1; display: block; max-height: 450px; margin: 0px auto; border: 0px; width: 659px;
+                            vertical-align: middle; position: relative; max-width: 250px;">
+                      </div>
+                    </div>
+                  </div>
+                  <div class="col-lg-4">
+                      <div class="row text-center">
+                      <h5>Regras de Movimentação da Cabeça</h5>
+                        <div class="col-lg-4">
+                          <ul>
+                              <li>Rotação</li>
+                              <ol>
+                                <li>-90º</li>
+                                <li>-45º</li>
+                                <li>Em Repouso</li>
+                              </ol>
+                            </ul>
+                        </div>
+                        <div class="col-lg-4">
+                          <ul>
+                            <li>Inclinação</li>
+                            <ol>
+                              <li>Para Cima</li>
+                              <li>Em Repouso</li>
+                              <li>Para Baixo</li>
+                            </ol>
+                          </ul>
+                        </div>
+                      </div>
+                      <div class="row text-center">
+                        <h5>Regras de Movimentação do Braço</h5>
+                        <div class="col-lg-4">
+                          Braço Direito
+                          <ul>
+                            <li>Colovelo</li>
+                            <ol>
+                              <li>Em Repouso</li>
+                              <li>Levemente Contraído</li>
+                              <li>Contraído</li>
+                              <li>Fortemente Contraído</li>
+                            </ol>
+                          </ul>
+                          <ul>
+                              <li>Pulso</li>
+                              <ol>
+                                <li>-90º</li>
+                                <li>-45º</li>
+                                <li>Em Repouso</li>
+                                <li>45º</li>
+                                <li>90º</li>
+                                <li>135º</li>
+                                <li>180º</li>
+                              </ol>
+                            </ul>
+                        </div>
+                        <div class="col-lg-4">
+                          Braço Esquerdo
+                          <ul>
+                            <li>Colovelo</li>
+                            <ol>
+                              <li>Em Repouso</li>
+                              <li>Levemente Contraído</li>
+                              <li>Contraído</li>
+                              <li>Fortemente Contraído</li>
+                            </ol>
+                          </ul>
+                          <ul>
+                            <li>Pulso</li>
+                            <ol>
+                              <li>-90º</li>
+                              <li>-45º</li>
+                              <li>Em Repouso</li>
+                              <li>45º</li>
+                              <li>90º</li>
+                              <li>135º</li>
+                              <li>180º</li>
+                            </ol>
+                          </ul>
+                      </div>
+                  </div>
+                  <blockquote class="blockquote-reverse">
+                      <p><small>Só é possível rotacionar a cabeça de ela não está inclinada Para Baixo.</small></p>
+                      <p><small>Só é possível rotacionar o pulso se o ombro estiver Fortemente Contraído.</small></p>
+                  </blockquote>
                 </div>
-                <p></p>
-                <br/>
-                <br/>
-                <button  [routerLink]="['/']" class="btn btn-danger" type="button">Voltar</button>
-
             </div>
-        </div>
+          </div>
+      </div>
     </div>
 </div>
