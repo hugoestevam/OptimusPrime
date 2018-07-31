@@ -1,6 +1,6 @@
-# R.O.B.O.: Portal de Simulação de Robor
+# R.O.B.O.: Portal de Simulação de Robo
 
-O R.O.B.O é um Single Page Application desenvolvido com Angular 4 e ASP.NET Core Web API com o objetivo de ser um projeto simulação de controle de robos.
+O R.O.B.O é um Single Page Application desenvolvido com Angular 4 e ASP.NET Core Web API com o objetivo de ser um projeto de simulação de controle de robos.
 
 Construído Hugo Estevam Longo - @hugoestevam.
 
