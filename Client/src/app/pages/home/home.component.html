@@ -1,0 +1,51 @@
+<div class="wrapper wrapper-content">
+    <div class="row">
+
+        <div class="col-lg-12">
+
+            <div class="row">
+                <div class="col-lg-12">
+                    <div class="ibox float-e-margins">
+                        <div class="ibox-title">
+                            <h5>Robos disponíveis</h5>
+                            <div class="ibox-tools">
+                                <button [routerLink]="['/add']" class="btn btn-primary " type="button"><i class="fa fa-plus"></i>&nbsp;Add</button>
+                            </div>
+                        </div>
+                        <div class="ibox-content">
+
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <table class="table table-hover margin bottom">
+                                        <thead>
+                                        <tr>
+                                            <th>Identificador.</th>
+                                            <th>Nome</th>
+                                            <th>OnLine</th>
+                                            <th>&nbsp;&nbsp;</th>
+                                        </tr>
+                                        </thead>
+                                        <tbody>
+                                        <tr *ngFor="let robot of robots">
+                                          <td><a [routerLink]="['/robot', robot.id]">{{ robot.id }}</a></td>
+                                          <td>{{ robot.name }}</td>
+                                          <td><span class="label label-primary">On-line</span></td>
+                                          <td class="text-right"><button [routerLink]="['/delete', robot.id]" class="btn-xs btn-danger" type="button"><i class="fa fa-trash"></i>&nbsp;Delete</button></td>
+                                        </tr>
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="col-lg-6">
+                                    <div id="world-map" style="height: 300px;"></div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+
+    </div>
+</div>

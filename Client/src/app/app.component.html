@@ -1,0 +1,16 @@
+<div id="wrapper">
+  <app-navigation [loginInfo]="loginInfo" *ngIf="loginInfo"></app-navigation>
+
+  <div id="page-wrapper" class="gray-bg">
+
+    <app-topnavbar></app-topnavbar>
+
+    <router-outlet></router-outlet>
+
+    <div class="footer">
+      <div>
+        <strong>Copyright</strong> @hugoestevam &copy; 2018
+      </div>
+    </div>
+  </div>
+</div>

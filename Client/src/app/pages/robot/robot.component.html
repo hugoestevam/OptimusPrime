@@ -1,0 +1,58 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Dados do Robo</h2>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="row wrapper wrapper-content animated fadeInRight">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Status atual do Robo: </h5>
+                <div>&nbsp;&nbsp;{{robot.name + ' (' + robot.id + ')'}}</div>
+            </div>
+            <div class="ibox-content">
+
+                <div>
+                    <p>
+                            Alinhamento da Cabeça: <code> {{robot.headAlign | headAlign}} </code>
+                    </p>
+                    <button (click)="moveHeadUp()" class="btn btn-default  dim " title="Mover p/ Cima" type="button"><i class="fa fa-arrow-up"></i></button>
+                    <button (click)="moveHeadDown()" class="btn btn-default  dim " title="Mover p/ Baixo" type="button"><i class="fa fa-arrow-down"></i></button>
+                    <p>
+                            Rotação da Cabeça: <code>{{robot.headDirection | headDirection}}</code>
+                    </p>
+                    <button (click)="moveHeadLeft()" class="btn btn-default  dim " title="Mover p/ Esquerda" type="button"><i class="fa fa-arrow-left"></i></button>
+                    <button (click)="moveHeadRight()" class="btn btn-default  dim " title="Mover p/ Direita" type="button"><i class="fa fa-arrow-right"></i></button>
+                    <p>
+                            Ombro Esquerdo: <code>{{robot.leftElbowPosition | elbowText}} </code>
+                    </p>
+                    <button (click)="moveLeftElbowCollapse()" class="btn btn-default  dim " title="Mover p/ Cima" type="button"><i class="fa fa-arrow-up"></i></button>
+                    <button (click)="moveLeftElbowExpand()" class="btn btn-default  dim " title="Mover p/ Baixo" type="button"><i class="fa fa-arrow-down"></i></button>
+                    <p>
+                            Ombro Direito: <code>{{robot.rightElbowPosition | elbowText}} </code>
+                    </p>
+                    <button (click)="moveRightElbowCollapse()" class="btn btn-default  dim " title="Mover p/ Cima" type="button"><i class="fa fa-arrow-up"></i></button>
+                    <button (click)="moveRightElbowExpand()" class="btn btn-default  dim " title="Mover p/ Baixo" type="button"><i class="fa fa-arrow-down"></i></button>
+                    <p>
+                            Pulso Esquerdo: <code>{{robot.leftWristDirection | wristText}} </code>
+                    </p>
+                    <button (click)="moveLeftWristToLeft()" class="btn btn-default  dim " title="Mover p/ Esquerda" type="button"><i class="fa fa-arrow-left"></i></button>
+                    <button (click)="moveLeftWristToRight()" class="btn btn-default  dim " title="Mover p/ Direita" type="button"><i class="fa fa-arrow-right"></i></button>
+                    <p>
+                            Pulso Direito: <code>{{robot.rightWristDirection | wristText}} </code>
+                    </p>
+                    <button (click)="moveRightWristToLeft()" class="btn btn-default  dim " title="Mover p/ Esquerda" type="button"><i class="fa fa-arrow-left"></i></button>
+                    <button (click)="moveRightWristToRight()" class="btn btn-default  dim " title="Mover p/ Direita" type="button"><i class="fa fa-arrow-right"></i></button>
+
+                </div>
+                <p></p>
+                <br/>
+                <br/>
+                <button  [routerLink]="['/']" class="btn btn-danger" type="button">Voltar</button>
+
+            </div>
+        </div>
+    </div>
+</div>

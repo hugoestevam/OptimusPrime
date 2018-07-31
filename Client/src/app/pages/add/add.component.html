@@ -1,0 +1,31 @@
+<div class="row wrapper border-bottom white-bg page-heading">
+    <div class="col-lg-10">
+        <h2>Adicionar um Robo</h2>
+    </div>
+    <div class="col-lg-2">
+    </div>
+</div>
+<div class="row wrapper wrapper-content animated fadeInRight">
+    <div class="col-lg-12">
+        <div class="ibox float-e-margins">
+            <div class="ibox-title">
+                <h5>Informe os dados do Robo</h5>
+            </div>
+            <div class="ibox-content">
+                <form [formGroup]="myForm" (ngSubmit)="register(myForm)">
+                  <div class="form-group">
+                    <label for="name">Nome</label>
+                    <input type="text" class="form-control" id="name" formControlName="name">
+                  </div>
+
+                  <div class="ibox-tools">
+                    <button [routerLink]="['/']" class="btn btn-default" type="button">Voltar</button>
+                    <button type="submit" class="btn btn-success">Criar</button>
+                  </div>
+                </form>
+
+            </div>
+
+        </div>
+    </div>
+</div>
