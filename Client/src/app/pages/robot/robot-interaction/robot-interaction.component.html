@@ -1,0 +1,78 @@
+<div class="container">
+  <div class="robots">
+    <div class="robot-human">
+      <div class="human-head"></div>
+      <div class="human-neck"></div>
+      <div class="human-upper-arm-left-container">
+        <div class="human-shoulder-left"></div>
+        <div class="human-upper-arm-left"></div>
+      </div>
+      <div [ngClass]="{
+        'human-lower-arm-left-container':robot.leftElbowPosition === 180,
+        'human-lower-arm-left-container-45':robot.leftElbowPosition === 135,
+        'human-lower-arm-left-container-90':robot.leftElbowPosition === 90,
+        'human-lower-arm-left-container-135':robot.leftElbowPosition === 45
+      }">
+        <div class="human-elbow-left"></div>
+        <div class="human-lower-arm-left"></div>
+      </div>
+      <div [ngClass]="{
+        'human-wrist-left-container': robot.leftElbowPosition === 180 && robot.leftWristDirection === 0,
+        'human-wrist-left-container-elbow45-0': robot.leftElbowPosition === 135 && robot.leftWristDirection === 0,
+        'human-wrist-left-container-elbow90-0': robot.leftElbowPosition === 90 && robot.leftWristDirection === 0,
+        'human-wrist-left-container-elbow135-0':robot.leftElbowPosition === 45 && robot.leftWristDirection === 0
+      }">
+        <div class="human-wrist-left"></div>
+        <div class="human-hand-left"></div>
+      </div>
+      <div class="human-upper-arm-right-container">
+        <div class="human-shoulder-right"></div>
+        <div class="human-upper-arm-right"></div>
+      </div>
+      <div [ngClass]="{
+        'human-lower-arm-right-container':robot.rightElbowPosition === 180,
+        'human-lower-arm-right-container-45':robot.rightElbowPosition === 135,
+        'human-lower-arm-right-container-90':robot.rightElbowPosition === 90,
+        'human-lower-arm-right-container-135':robot.rightElbowPosition === 45
+      }">
+        <div class="human-elbow-right"></div>
+        <div class="human-lower-arm-right"></div>
+      </div>
+      <div [ngClass]="{
+        'human-wrist-right-container': robot.rightElbowPosition === 180 && robot.rightWristDirection === 0,
+        'human-wrist-right-container-elbow45-0': robot.rightElbowPosition === 135 && robot.rightWristDirection === 0,
+        'human-wrist-right-container-elbow90-0': robot.rightElbowPosition === 90 && robot.rightWristDirection === 0,
+        'human-wrist-right-container-elbow135-0': robot.rightElbowPosition === 45 && robot.rightWristDirection === 0
+      }">
+        <div class="human-wrist-right"></div>
+        <div class="human-hand-right"></div>
+      </div>
+      <div class="human-torso"></div>
+      <div class="human-hip-left-container">
+        <div class="human-hip-left"></div>
+        <div class="human-thigh-left"></div>
+      </div>
+      <div class="human-hip-right-container">
+        <div class="human-hip-right"></div>
+        <div class="human-thigh-right"></div>
+      </div>
+      <div class="human-knee-left-container">
+        <div class="human-knee-left"></div>
+        <div class="human-calf-left"></div>
+      </div>
+      <div class="human-knee-right-container">
+        <div class="human-knee-right"></div>
+        <div class="human-calf-right"></div>
+      </div>
+      <div class="human-ankle-left-container">
+        <div class="human-ankle-left"></div>
+        <div class="human-foot-left"></div>
+      </div>
+      <div class="human-ankle-right-container">
+        <div class="human-ankle-right"></div>
+        <div class="human-foot-right"></div>
+      </div>
+    </div>
+
+  </div>
+</div>

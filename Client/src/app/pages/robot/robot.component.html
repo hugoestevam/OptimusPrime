@@ -26,12 +26,12 @@
                     <button (click)="moveHeadLeft()" class="btn btn-default  dim " title="Mover p/ Esquerda" type="button"><i class="fa fa-arrow-left"></i></button>
                     <button (click)="moveHeadRight()" class="btn btn-default  dim " title="Mover p/ Direita" type="button"><i class="fa fa-arrow-right"></i></button>
                     <p>
-                            Ombro Esquerdo: <code>{{robot.leftElbowPosition | elbowText}} </code>
+                            Cotovelo Esquerdo: <code>{{robot.leftElbowPosition | elbowText}} </code>
                     </p>
                     <button (click)="moveLeftElbowCollapse()" class="btn btn-default  dim " title="Mover p/ Cima" type="button"><i class="fa fa-arrow-up"></i></button>
                     <button (click)="moveLeftElbowExpand()" class="btn btn-default  dim " title="Mover p/ Baixo" type="button"><i class="fa fa-arrow-down"></i></button>
                     <p>
-                            Ombro Direito: <code>{{robot.rightElbowPosition | elbowText}} </code>
+                            Cotovelo Direito: <code>{{robot.rightElbowPosition | elbowText}} </code>
                     </p>
                     <button (click)="moveRightElbowCollapse()" class="btn btn-default  dim " title="Mover p/ Cima" type="button"><i class="fa fa-arrow-up"></i></button>
                     <button (click)="moveRightElbowExpand()" class="btn btn-default  dim " title="Mover p/ Baixo" type="button"><i class="fa fa-arrow-down"></i></button>
@@ -53,12 +53,9 @@
                   <div class="col-lg-4">
                     <div class="row text-center">
                       <h5>Interação com o Robo</h5>
-                      <small>(Coming Soon)</small>
                       <br/>
-                      <div>
-                          <img alt="OPTIMUS PRIME: Vector-Based" src="https://i.pinimg.com/736x/80/10/2f/80102f5188e4b88b330ab3642afd58dd.jpg"
-                            style="transition: opacity 0.04s linear; border-radius: 8px; opacity: 1; display: block; max-height: 450px; margin: 0px auto; border: 0px; width: 659px;
-                            vertical-align: middle; position: relative; max-width: 250px;">
+                      <div class="text-left">
+                        <app-robot-interaction [robot]=robot></app-robot-interaction>
                       </div>
                     </div>
                   </div>

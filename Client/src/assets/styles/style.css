@@ -8379,3 +8379,573 @@ body.md-skin {
   }
 }
 
+/* Robot CSS */
+* {
+  box-sizing: border-box;
+  position: relative;
+  padding: 0px;
+  margin: 0px;
+}
+
+body {
+  background: #ffffff;
+}
+
+.container {
+  position: relative;
+  margin: auto;
+  display: block;
+  margin-top: 5%;
+  margin-left: 50%;
+  width: 600px;
+  height: 400px;
+}
+
+.robots {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  left: -10%;
+}
+
+.robot-human {
+  width: 50%;
+  height: 100%;
+}
+
+.leash {
+  position: absolute;
+  height: 60%;
+  width: 80%;
+  top: 40%;
+  left: 18%;
+  border-bottom: 1px solid rgba(221, 221, 219, 0.25);
+  border-radius: 50px 50px 50px 400px / 25px 25px 25px 150px;
+}
+
+.joint-left, .human-shoulder-left, .human-elbow-left, .human-wrist-left, .human-hip-left, .human-knee-left, .human-ankle-left {
+  z-index: 2;
+}
+
+.body-part-left, .human-upper-arm-left, .human-lower-arm-left, .human-hand-left, .human-thigh-left, .human-calf-left, .human-foot-left {
+  z-index: 0;
+}
+
+.joint-right, .human-shoulder-right, .human-elbow-right, .human-wrist-right, .human-knee-right, .human-ankle-right {
+  z-index: 2;
+}
+
+.body-part-right, .human-upper-arm-right, .human-lower-arm-right, .human-hand-right, .human-thigh-right, .human-calf-right, .human-foot-right {
+  z-index: 0;
+}
+
+.joint, .human-shoulder-left, .human-elbow-left, .human-wrist-left, .human-shoulder-right, .human-elbow-right, .human-wrist-right, .human-knee-left, .human-knee-right, .human-ankle-left, .human-ankle-right {
+  position: absolute;
+  height: 10%;
+  width: 85%;
+  top: 0;
+  left: 7.5%;
+  border-radius: 50%;
+  background-color:rgba(221, 221, 219, 0.45);
+}
+
+.body-part, .human-head, .human-neck, .human-torso, .human-foot, .human-foot-left, .human-foot-right, .human-hand, .human-hand-left, .human-hand-right, .human-upper-arm-left, .human-lower-arm-left, .human-upper-arm-right, .human-lower-arm-right, .human-thigh-left, .human-thigh-right, .human-calf-left, .human-calf-right, .dog-head, .dog-neck, .dog-torso, .dog-snout, .dog-ear-right, .dog-thigh, .dog-thigh-left, .dog-thigh-right, .dog-upper-front-arm, .dog-upper-arm-left, .dog-upper-arm-right, .dog-lower-leg, .dog-lower-arm-left, .dog-lower-arm-right, .dog-lower-leg-left, .dog-lower-leg-right, .dog-paw, .dog-front-paw-left, .dog-front-paw-right, .dog-back-paw-left, .dog-back-paw-right {
+  position: absolute;
+  height: 100%;
+  width: 100%;
+  border-radius: 50% 50% 50% 50% / 40% 40% 60% 60%;
+  background-color: rgba(221, 221, 219, 0.45);
+  background-image: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PHJhZGlhbEdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJ1c2VyU3BhY2VPblVzZSIgY3g9IjUwJSIgY3k9IiIgcj0iMTAwJSI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZmZmZmZiIgc3RvcC1vcGFjaXR5PSIwLjUiLz48c3RvcCBvZmZzZXQ9IjEwMCUiIHN0b3AtY29sb3I9IiNmZmZmZmYiIHN0b3Atb3BhY2l0eT0iMC4wIi8+PC9yYWRpYWxHcmFkaWVudD48L2RlZnM+PHJlY3QgeD0iMCIgeT0iMCIgd2lkdGg9IjEwMCUiIGhlaWdodD0iMTAwJSIgZmlsbD0idXJsKCNncmFkKSIgLz48L3N2Zz4g');
+  background-size: 100%;
+  background-image: radial-gradient(ellipse cover at center, rgba(255, 255, 255, 0.5) 0%, rgba(255, 255, 255, 0) 100%);
+}
+
+.human-head {
+  z-index: 2;
+  height: 20%;
+  width: 25%;
+  top: .5%;
+  left: 7%;
+  border-radius: 50%;
+}
+
+.human-neck {
+  height: 4.5%;
+  width: 8%;
+  top: 20.25%;
+  left: 15%;
+  border-radius: 50% 50% 50% 50% / 60% 60% 40% 40%;
+  -webkit-transform: rotate(5deg);
+          transform: rotate(5deg);
+}
+
+.human-torso {
+  z-index: 0;
+  height: 40%;
+  width: 40%;
+  top: 24.5%;
+  left: -2%;
+  border-radius: 20% 20% 10% 10% / 10% 10% 20% 20%;
+}
+
+.human-foot, .human-foot-left, .human-foot-right {
+  height: 60%;
+  width: 100%;
+  top: 45%;
+  border-radius: 200px 200px 50px 50px / 200px 200px 25px 25px;
+}
+
+.human-hand, .human-hand-left, .human-hand-right {
+  height: 45%;
+  width: 180%;
+  top: 30%;
+  border-radius: 50px 400px 50px 50px / 25px 150px 25px 25px;
+}
+
+.human-upper-arm-left-container {
+  position: absolute;
+  height: 25%;
+  width: 13%;
+  top: 26%;
+  left: -15%;
+}
+
+.human-shoulder-left {
+  height: 35%;
+}
+
+.human-upper-arm-left {
+  border-radius: 50% 50% 50% 50% / 30% 30% 50% 50%;
+}
+
+.human-lower-arm-left-container {
+  position: absolute;
+  height: 25%;
+  width: 9%;
+  top: 45%;
+  left: -13.5%;
+}
+
+.human-lower-arm-left-container-45 {
+  position: absolute;
+  height: 25%;
+  width: 9%;
+  top: 45%;
+  left: -23.5%;
+  transform: rotate(45deg);
+}
+
+.human-lower-arm-left-container-90 {
+  position: absolute;
+  height: 25%;
+  width: 9%;
+  top: 35%;
+  left: -25%;
+  transform: rotate(90deg);
+}
+
+.human-lower-arm-left-container-135 {
+  position: absolute;
+  height: 25%;
+  width: 9%;
+  top: 30%;
+  left: -25%;
+  transform: rotate(135deg);
+}
+
+.human-elbow-left {
+  height: 24%;
+  top: 1.5%;
+  left: 10.5%;
+}
+
+.human-lower-arm-left {
+  border-radius: 50% 50% 50% 50% / 22% 22% 60% 60%;
+}
+
+.human-wrist-left-container {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 65%;
+  left: -12.5%;
+}
+
+.human-wrist-left-container-elbow45-0 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 63%;
+  left: -36%;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.human-wrist-left-container-elbow90-0 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 43%;
+  left: -42%;
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.human-wrist-left-container-elbow135-0 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 28%;
+  left: -40%;
+  -webkit-transform: rotate(135deg);
+  transform: rotate(135deg);
+}
+
+.human-wrist-left-container-elbow135-minus45 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 27%;
+  left: -36%;
+  -webkit-transform: rotate(180deg);
+  transform: rotate(180deg);
+}
+
+.human-wrist-left-container-elbow135-minus90 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 26%;
+  left: -34%;
+  -webkit-transform: rotate(225deg);
+  transform: rotate(225deg);
+}
+
+.human-wrist-left-container-elbow135-45 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 32%;
+  left: -38%;
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.human-wrist-left-container-elbow135-90 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 33%;
+  left: -38%;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.human-wrist-left-container-elbow135-135 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 33%;
+  left: -34%;
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+
+.human-wrist-left-container-elbow135-180 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 31%;
+  left: -32%;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.human-wrist-left {
+  height: 45%;
+  width: 65%;
+  top: 1%;
+  left: 2%;
+}
+
+.human-hand-left {
+  top: 60%;
+  left: -54%;
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.human-upper-arm-right-container {
+  position: absolute;
+  height: 25%;
+  width: 13%;
+  top: 26%;
+  left: 38%;
+}
+
+.human-shoulder-right {
+  height: 35%;
+}
+
+.human-upper-arm-right {
+  border-radius: 50% 50% 50% 50% / 30% 30% 50% 50%;
+}
+
+.human-lower-arm-right-container {
+  position: absolute;
+  height: 25%;
+  width: 9%;
+  top: 45%;
+  left: 40%;
+}
+
+.human-lower-arm-right-container-45 {
+  position: absolute;
+  height: 25%;
+  width: 9%;
+  top: 45%;
+  left: 50%;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.human-lower-arm-right-container-90 {
+  position: absolute;
+  height: 25%;
+  width: 9%;
+  top: 36%;
+  left: 52%;
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.human-lower-arm-right-container-135 {
+  position: absolute;
+  height: 25%;
+  width: 9%;
+  top: 30%;
+  left: 52%;
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+
+.human-elbow-right {
+  height: 24%;
+  top: 1.5%;
+  left: 10.5%;
+}
+
+.human-lower-arm-right {
+  border-radius: 50% 50% 50% 50% / 22% 22% 60% 60%;
+}
+
+.human-wrist-right-container {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 66%;
+  left: 37%;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.human-wrist-right-container-elbow45-0 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 63%;
+  left: 60%;
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+
+.human-wrist-right-container-elbow90-0 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 45%;
+  left: 70%;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.human-wrist-right-container-elbow135-0 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 28%;
+  left: 68%;
+  -webkit-transform: rotate(-90deg);
+  transform: rotate(-90deg);
+}
+
+.human-wrist-right-container-elbow135-minus45 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 26%;
+  left: 64%;
+  -webkit-transform: rotate(-135deg);
+  transform: rotate(-135deg);
+}
+
+.human-wrist-right-container-elbow135-minus90 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 25%;
+  left: 60%;
+  -webkit-transform: rotate(-180deg);
+  transform: rotate(-180deg);
+}
+
+.human-wrist-right-container-elbow135-45 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 33%;
+  left: 66%;
+  -webkit-transform: rotate(-45deg);
+  transform: rotate(-45deg);
+}
+
+.human-wrist-right-container-elbow135-90 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 35%;
+  left: 64%;
+  -webkit-transform: rotate(0deg);
+  transform: rotate(0deg);
+}
+
+.human-wrist-right-container-elbow135-135 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 34%;
+  left: 59%;
+  -webkit-transform: rotate(45deg);
+  transform: rotate(45deg);
+}
+
+.human-wrist-right-container-elbow135-180 {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  top: 31%;
+  left: 56%;
+  -webkit-transform: rotate(90deg);
+  transform: rotate(90deg);
+}
+
+.human-wrist-right {
+  height: 45%;
+  width: 65%;
+  top: -12%;
+  left: 2%;
+}
+
+.human-hand-right {
+  -webkit-transform: rotate(45deg);
+          transform: rotate(225deg) scaleX(-1);;
+
+}
+
+.human-hip-left-container {
+  position: absolute;
+  height: 30%;
+  width: 18%;
+  top: 62%;
+  left: 20%;
+
+}
+
+.human-hip-right-container {
+  position: absolute;
+  height: 30%;
+  width: 18%;
+  top: 62%;
+  left: -1%;
+}
+
+.human-hip, {
+  height: 30%;
+}
+
+.human-thigh-left {
+  border-radius: 50% 50% 50% 50% / 25% 25% 60% 60%;
+}
+
+.human-thigh-right {
+  border-radius: 50% 50% 50% 50% / 25% 25% 60% 60%;
+}
+
+.human-knee-left-container {
+  position: absolute;
+  height: 30%;
+  width: 12%;
+  top: 84%;
+  left: 2%;
+}
+
+.human-knee-left {
+  height: 25%;
+  width: 80%;
+  top: 1%;
+  left: 12%;
+}
+
+.human-calf-left {
+  border-radius: 50% 50% 50% 50% / 30% 30% 40% 40%;
+}
+
+.human-knee-right-container {
+  position: absolute;
+  height: 30%;
+  width: 12%;
+  top: 84%;
+  left: 23%;
+
+}
+
+.human-knee-right {
+  height: 25%;
+  width: 80%;
+  top: 1%;
+  left: 11%;
+}
+
+.human-calf-right {
+  border-radius: 50% 50% 50% 50% / 30% 30% 40% 40%;
+}
+
+.human-ankle-left-container {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  bottom: -17%;
+  left: 3.5%;
+}
+
+.human-ankle-left {
+  height: 55%;
+  width: 80%;
+  top: 13%;
+}
+
+.human-ankle-right-container {
+  position: absolute;
+  height: 10%;
+  width: 10%;
+  bottom: -17%;
+  left: 24%;
+}
+
+.human-ankle-right {
+  height: 55%;
+  width: 80%;
+  top: 13%;
+}
+
+
