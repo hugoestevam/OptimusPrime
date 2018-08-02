@@ -44,7 +44,7 @@ namespace robot.Domain
         {
             LeftElbow = new Elbow(45);
             return this;
-        }
+        }        
 
         public MockRobot WithRightElbowCollapsed()
         {
@@ -61,6 +61,12 @@ namespace robot.Domain
         public MockRobot WithLeftWristLimitedToRightDirection()
         {
             LeftWrist = new Wrist(-90);
+            return this;
+        }
+
+        public MockRobot WithRightWristLimitedToLeftDirection()
+        {
+            RightWrist = new Wrist(180);
             return this;
         }
     }

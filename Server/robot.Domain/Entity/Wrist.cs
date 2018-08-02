@@ -44,5 +44,13 @@ namespace robot.Domain
             Direction = Direction - AngleRotate;
             return Direction;
         }
+
+        /// <summary>
+        /// Método responsável voltar o pulso para o estado inicial
+        /// </summary>
+        public void SetToInitialState()
+        {
+            Direction = 0;
+        }
     }
 }

@@ -182,5 +182,45 @@ namespace robot.Domain.Test.Entities
             result.Result.ShouldBe(135);
             robot.LeftElbowPosition.ShouldBe(135);
         }
+
+        [Test]
+        public void ExpandLeftElbowAndSetWristToInitialStateTest()
+        {
+            //Arrange
+            creator = new MockCreatorRobot();
+            MockRobot robot = ((MockRobot)creator
+                                .MakeARobot())
+                                .WithLeftWristLimitedToLeftDirection()
+                                .WithLeftElbowCollapsed();
+
+            //Action
+            var result = robot.LeftElbowExpand();
+
+            //Assert
+            result.IsSuccess.ShouldBeTrue();
+            result.Result.ShouldBe(90);
+            robot.LeftElbowPosition.ShouldBe(90);
+            robot.LeftWristDirection.ShouldBe(0);
+        }
+
+        [Test]
+        public void ExpandRightElbowAndSetWristToInitialStateTest()
+        {
+            //Arrange
+            creator = new MockCreatorRobot();
+            MockRobot robot = ((MockRobot)creator
+                                .MakeARobot())
+                                .WithRightWristLimitedToLeftDirection()
+                                .WithRightElbowCollapsed();
+
+            //Action
+            var result = robot.RightElbowExpand();
+
+            //Assert
+            result.IsSuccess.ShouldBeTrue();
+            result.Result.ShouldBe(90);
+            robot.RightElbowPosition.ShouldBe(90);
+            robot.RightWristDirection.ShouldBe(0);
+        }
     }
 }

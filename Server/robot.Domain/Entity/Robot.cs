@@ -81,6 +81,9 @@ namespace robot.Domain
         /// </summary>
         public Try<Exception, int> LeftElbowExpand()
         {
+            if (LeftElbowPosition == 45 && LeftWristDirection != 0)
+                LeftWrist.SetToInitialState();
+                
             return LeftElbow.Expand();
         }
 
@@ -89,6 +92,9 @@ namespace robot.Domain
         /// </summary>
         public Try<Exception, int> RightElbowExpand()
         {
+            if (RightElbowPosition == 45 && RightWristDirection != 0)
+                RightWrist.SetToInitialState();
+
             return RightElbow.Expand();
         }
 
