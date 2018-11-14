@@ -21,13 +21,6 @@ namespace robot.Application.Features.Robo.Handlers
 
         public Task<Try<Exception, Robot>> Handle(RobotQuery query, CancellationToken cancellationToken)
         {
-            var result = query.Validate();
-
-            if (!result.IsValid)
-                return Task
-                        .FromResult(new ValidationException(result.Errors)
-                        .Run<Robot>());
-
             return Task.FromResult(_repository.Get(query.RobotId));
         }
     }

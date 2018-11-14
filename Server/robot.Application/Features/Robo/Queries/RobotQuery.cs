@@ -14,18 +14,13 @@ namespace robot.Application.Features.Robo.Queries
         {
             RobotId = id;
         }
+    }
 
-        public ValidationResult Validate()
+    public class RobotQueryValidator : AbstractValidator<RobotQuery>
+    {
+        public RobotQueryValidator()
         {
-            return new Validator().Validate(this);
-        }
-
-        private class Validator : AbstractValidator<RobotQuery>
-        {
-            public Validator()
-            {
-                RuleFor(m => m.RobotId).NotEmpty();
-            }
+            RuleFor(m => m.RobotId).NotEmpty();
         }
     }
 }

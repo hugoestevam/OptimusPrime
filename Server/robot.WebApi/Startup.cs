@@ -1,9 +1,7 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
 using AutoMapper;
-using FluentValidation;
 using FluentValidation.AspNetCore;
 using MediatR;
 using Microsoft.AspNetCore.Builder;
@@ -33,10 +31,7 @@ namespace robot.WebApi
 
             services.AddCors();
 
-            Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfile<MappingProfile>();
-            });            
+            services.AddAutoMapper();         
 
             // Registra o Swagger para documentar a API
             services.AddSwaggerGen(c =>
@@ -67,16 +62,14 @@ namespace robot.WebApi
                 c.IncludeXmlComments(xmlPath);
             });
 
-            services.AddScoped<ServiceFactory>(p => p.GetService);
+            // Registra os Repositorios que mantém a persistência do Robo
+            services.AddRepositories();
 
-            // Registra o Repositorio que mantém o cache do Robo
-            services.AddSingleton<IRobotRepository, RobotRepository>();
+            // Registra os Validators que executam as validações dos Inputs
+            services.AddValidators();
 
-            // Registra o Mediator que manipula as chamadas
-            services.Scan(scan => scan
-                .FromAssembliesOf(typeof(IMediator), typeof(AppModule))
-                .AddClasses()
-                .AsImplementedInterfaces());            
+            // Registra o Mediator que manipula as chamadas (no caso MediatR)
+            services.AddMediator();          
 
             services.BuildServiceProvider();
         }
