@@ -2,11 +2,9 @@
 using Microsoft.AspNetCore.Mvc;
 using robot.Application.Features.Robo.Commands;
 using robot.Application.Features.Robo.Queries;
-using robot.Domain.Exceptions;
 using robot.WebApi.Exceptions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
-using robot.Domain;
 using robot.Domain.Features.Robo;
 using robot.WebApi.Base;
 
@@ -227,7 +225,7 @@ namespace robot.WebApi.Features.Robo
         /// </remarks>
         /// <response code="200">Success, Chamada realizada com sucesso</response>
         /// <response code="400">Bad Request, chamada inválida</response>  
-        [ProducesResponseType(typeof(Result), 200)]
+        [ProducesResponseType(typeof(Domain.Results.Unit), 200)]
         [ProducesResponseType(typeof(ExceptionPayload), 400)]
         [HttpDelete("{id}")]
         public async Task<IActionResult> Delete(string id)

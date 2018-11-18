@@ -1,14 +1,15 @@
 ﻿using MediatR;
 using robot.Application.Features.Robo.Commands;
-using robot.Domain.Exceptions;
+using robot.Domain.Results;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using robot.Domain.Exceptions;
 using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Handlers
 {
-    public class HeadRotateHandler : IRequestHandler<HeadRotateCommand, Try<Exception, int>>
+    public class HeadRotateHandler : IRequestHandler<HeadRotateCommand, Result<Exception, int>>
     {
         private readonly IRobotRepository _repository;
 
@@ -17,19 +18,19 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public Task<Try<Exception, int>> Handle(HeadRotateCommand command, CancellationToken cancellationToken)
+        public Task<Result<Exception, int>> Handle(HeadRotateCommand command, CancellationToken cancellationToken)
         {
             var findRobotCallback = _repository.Get(command.RobotId);
 
             if (!findRobotCallback.IsSuccess)
                 return Task.FromResult(findRobotCallback.Failure.Run<int>());
 
-            return Task.FromResult(ProcessHeadRotate(command, findRobotCallback.Result)); 
+            return Task.FromResult(ProcessHeadRotate(command, findRobotCallback.Success)); 
         }
 
-        private Try<Exception, int> ProcessHeadRotate(HeadRotateCommand command, RobotAgreggate robot)
+        private Result<Exception, int> ProcessHeadRotate(HeadRotateCommand command, RobotAgreggate robot)
         {
-            Try<Exception, int> rotateCallback;
+            Result<Exception, int> rotateCallback;
             switch (command.HeadRotate.ToLower())
             {
                 case "left":
@@ -43,12 +44,12 @@ namespace robot.Application.Features.Robo.Handlers
             }
 
             if (rotateCallback.IsSuccess)
-                return PersistRobotState(robot, rotateCallback.Result);
+                return PersistRobotState(robot, rotateCallback.Success);
 
             return rotateCallback.Failure;
         }
 
-        private Try<Exception, int> PersistRobotState(RobotAgreggate robot, int state)
+        private Result<Exception, int> PersistRobotState(RobotAgreggate robot, int state)
         {
             var updateCallback = _repository.Update(robot);
 

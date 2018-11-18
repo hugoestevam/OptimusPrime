@@ -1,8 +1,9 @@
-﻿using robot.Domain.Exceptions;
+﻿using robot.Domain.Results;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using robot.Domain.Exceptions;
 using robot.Domain.Features.Robo;
 
 namespace robot.Infra.Data
@@ -22,7 +23,7 @@ namespace robot.Infra.Data
             robot.RobotName = "EuRobo";
             _cache.GetOrAdd(robot.RobotId, robot);
         }
-        public Try<Exception, RobotAgreggate> Add(RobotAgreggate robot)
+        public Result<Exception, RobotAgreggate> Add(RobotAgreggate robot)
         {
             var robotId = Guid.NewGuid().ToString("N");
 
@@ -31,16 +32,16 @@ namespace robot.Infra.Data
             return robot;
         }
 
-        public Try<Exception, Result> Delete(string robotId)
+        public Result<Exception, Unit> Delete(string robotId)
         {
             RobotAgreggate robot;
             if (_cache.TryRemove(robotId, out robot))
-                return Result.Successful;
+                return Unit.Successful;
 
             return new InvalidOperationException($"Erro ao remover o robo: {robotId}");
         }
 
-        public Try<Exception, RobotAgreggate> Get(string robotId)
+        public Result<Exception, RobotAgreggate> Get(string robotId)
         {
             RobotAgreggate robot = null;
             if (_cache.TryGetValue(robotId, out robot))
@@ -50,12 +51,12 @@ namespace robot.Infra.Data
             return new NotFoundException();
         }
 
-        public Try<Exception, List<RobotAgreggate>> GetAll()
+        public Result<Exception, List<RobotAgreggate>> GetAll()
         {
-            return Try.Run( () => _cache.Values.ToList());
+            return Result.Run( () => _cache.Values.ToList());
         }
 
-        public Try<Exception, RobotAgreggate> Update(RobotAgreggate robot)
+        public Result<Exception, RobotAgreggate> Update(RobotAgreggate robot)
         {
             RobotAgreggate actualRobot = null;
             _cache.TryGetValue(robot.RobotId, out actualRobot);

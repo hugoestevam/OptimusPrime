@@ -1,5 +1,6 @@
 ﻿using System;
 using robot.Domain.Exceptions;
+using robot.Domain.Results;
 
 namespace robot.Domain.Features.Robo
 {
@@ -24,7 +25,7 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por rotacionar o punho para a esquerda
         /// </summary>
-        public Try<Exception, int> RotateToTheLeft()
+        public Result<Exception, int> RotateToTheLeft()
         {
             if (Direction == LeftLimit)
                 return new LimitedWristRotateException();
@@ -36,7 +37,7 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por rotacionar o punho para a direita
         /// </summary>
-        public Try<Exception, int> RotateToTheRight()
+        public Result<Exception, int> RotateToTheRight()
         {
             if (Direction == RightLimit)
                 return new LimitedWristRotateException();

@@ -2,13 +2,14 @@
 using AutoMapper.QueryableExtensions;
 using FluentValidation;
 using Microsoft.AspNetCore.Mvc;
-using robot.Domain.Exceptions;
+using robot.Domain.Results;
 using robot.WebApi.Exceptions;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
+using robot.Domain.Exceptions;
 
 namespace robot.WebApi.Base
 {
@@ -21,9 +22,9 @@ namespace robot.WebApi.Base
         /// <typeparam name="TSuccess"></typeparam>
         /// <param name="callback">Objeto Try utilizado nas chamadas.</param>
         /// <returns></returns>
-        public IActionResult HandleCommand<TFailure, TSuccess>(Try<TFailure, TSuccess> callback) where TFailure : Exception
+        public IActionResult HandleCommand<TFailure, TSuccess>(Result<TFailure, TSuccess> callback) where TFailure : Exception
         {
-            return callback.IsFailure ? HandleFailure(callback.Failure) : Ok(callback.Result);
+            return callback.IsFailure ? HandleFailure(callback.Failure) : Ok(callback.Success);
         }
 
         /// <summary>
@@ -33,9 +34,9 @@ namespace robot.WebApi.Base
         /// <typeparam name="TResult">Tipo de Destino (ViewModel)</typeparam>
         /// <param name="callback">Objeto Try utilizado nas chamadas.</param>
         /// <returns></returns>
-        public IActionResult HandleQuery<TSource, TResult>(Try<Exception, TSource> callback)
+        public IActionResult HandleQuery<TSource, TResult>(Result<Exception, TSource> callback)
         {
-            return callback.IsFailure ? HandleFailure(callback.Failure) : Ok(Mapper.Map<TSource, TResult>(callback.Result));
+            return callback.IsFailure ? HandleFailure(callback.Failure) : Ok(Mapper.Map<TSource, TResult>(callback.Success));
         }
 
         /// <summary>
@@ -45,12 +46,12 @@ namespace robot.WebApi.Base
         /// <typeparam name="TResult">Tipo de retorno objQuery</typeparam>
         /// <param name="callback">List(TSource)</param>
         /// <returns>Result(TResult)</returns>
-        public IActionResult HandleQueryList<TSource, TResult>(Try<Exception, List<TSource>> callback)
+        public IActionResult HandleQueryList<TSource, TResult>(Result<Exception, List<TSource>> callback)
         {
             if (callback.IsFailure)
                 return HandleFailure(callback.Failure);
 
-            var query = callback.Result;
+            var query = callback.Success;
 
             var result = query.AsQueryable().ProjectTo<TResult>();
 

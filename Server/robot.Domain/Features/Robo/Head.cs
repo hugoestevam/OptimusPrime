@@ -1,5 +1,6 @@
-﻿using robot.Domain.Exceptions;
+﻿using robot.Domain.Results;
 using System;
+using robot.Domain.Exceptions;
 
 namespace robot.Domain.Features.Robo
 {
@@ -36,7 +37,7 @@ namespace robot.Domain.Features.Robo
         /// Método responsável por movimentar o alinhamento da cabeça para cima
         /// </summary>
         /// <returns></returns>
-        public Try<Exception, Align> MoveForUp()
+        public Result<Exception, Align> MoveForUp()
         {
             if (Align == Align.Top)
                 return new LimitedHeadMoveException();
@@ -49,7 +50,7 @@ namespace robot.Domain.Features.Robo
         /// Método responsável por movimentar o alinhamento da cabeça para baixo
         /// </summary>
         /// <returns></returns>
-        public Try<Exception, Align> MoveToBelow()
+        public Result<Exception, Align> MoveToBelow()
         {
             if (Align == Align.Botton)
                 return new LimitedHeadMoveException();
@@ -62,7 +63,7 @@ namespace robot.Domain.Features.Robo
         /// Método responsável por rotacionar a cabeça para a esquerda
         /// </summary>
         /// <returns></returns>
-        public Try<Exception, int> RotateToTheLeft()
+        public Result<Exception, int> RotateToTheLeft()
         {
             if (Direction == LeftLimit)
                 return new LimitedHeadRotateException();
@@ -75,7 +76,7 @@ namespace robot.Domain.Features.Robo
         /// Método responsável por rotacionar a cabeça para a direita
         /// </summary>
         /// <returns></returns>
-        public Try<Exception, int> RotateToTheRight()
+        public Result<Exception, int> RotateToTheRight()
         {
             if (Direction == RightLimit)
                 return new LimitedHeadRotateException();

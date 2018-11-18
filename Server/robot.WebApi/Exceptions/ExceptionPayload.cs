@@ -1,6 +1,7 @@
 ﻿using Newtonsoft.Json;
-using robot.Domain.Exceptions;
+using robot.Domain.Results;
 using System;
+using robot.Domain.Exceptions;
 
 namespace robot.WebApi.Exceptions
 {

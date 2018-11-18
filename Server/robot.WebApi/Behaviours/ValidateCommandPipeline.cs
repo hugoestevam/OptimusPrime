@@ -1,6 +1,6 @@
 ﻿using FluentValidation;
 using MediatR;
-using robot.Domain.Exceptions;
+using robot.Domain.Results;
 using System;
 using System.Linq;
 using System.Threading;
@@ -11,8 +11,8 @@ namespace robot.WebApi.Behaviours
     /// <summary>
     /// Pipeline que valida todos os Commands, que implementam a interface IRequest do MediatR, antes de chamar a execução do handler.
     /// </summary>
-    public class ValidateCommandPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, Try<Exception, TResponse>>
-        where TRequest : IRequest<Try<Exception, TResponse>>
+    public class ValidateCommandPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, Result<Exception, TResponse>>
+        where TRequest : IRequest<Result<Exception, TResponse>>
     {
         private readonly IValidator<TRequest>[] _validators;
 
@@ -21,7 +21,7 @@ namespace robot.WebApi.Behaviours
             _validators = validators;
         }
 
-        public async Task<Try<Exception, TResponse>> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<Try<Exception, TResponse>> next)
+        public async Task<Result<Exception, TResponse>> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<Result<Exception, TResponse>> next)
         {
             var failures = _validators
                 .Select(v => v.Validate(request))

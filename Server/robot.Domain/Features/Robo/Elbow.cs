@@ -1,5 +1,6 @@
 ﻿using System;
 using robot.Domain.Exceptions;
+using robot.Domain.Results;
 
 namespace robot.Domain.Features.Robo
 {
@@ -27,7 +28,7 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por contrair o cotovelo
         /// </summary>
-        public Try<Exception, int> Collapse()
+        public Result<Exception, int> Collapse()
         {
             if (Position == LimitElbowCollapse)
                 return new LimitedElbowCollapseException();
@@ -39,7 +40,7 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por estender o cotovelo
         /// </summary>
-        public Try<Exception, int> Expand()
+        public Result<Exception, int> Expand()
         {
             if (Position == LimitElbowExpand)
                 return new LimitedElbowExpandException();

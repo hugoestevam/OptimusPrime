@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 using MediatR;
-using robot.Domain.Exceptions;
+using robot.Domain.Results;
 using System;
 using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Queries
 {
-    public class RobotQuery : IRequest<Try<Exception, RobotAgreggate>>
+    public class RobotQuery : IRequest<Result<Exception, RobotAgreggate>>
     {
         public string RobotId { get; set; }
         public RobotQuery(string id)
