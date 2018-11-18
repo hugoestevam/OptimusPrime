@@ -1,14 +1,15 @@
 ﻿using MediatR;
 using robot.Application.Features.Robo.Commands;
-using robot.Domain.Exceptions;
+using robot.Domain.Results;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
+using robot.Domain.Exceptions;
 using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Handlers
 {
-    public class MoveElbowHandler : IRequestHandler<ElbowCommand, Try<Exception, int>>
+    public class MoveElbowHandler : IRequestHandler<ElbowCommand, Result<Exception, int>>
     {
         private readonly IRobotRepository _repository;
 
@@ -17,19 +18,19 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public Task<Try<Exception, int>> Handle(ElbowCommand command, CancellationToken cancellationToken)
+        public Task<Result<Exception, int>> Handle(ElbowCommand command, CancellationToken cancellationToken)
         {
             var findRobotCallback = _repository.Get(command.RobotId);
 
             if (!findRobotCallback.IsSuccess)
                 return Task.FromResult(findRobotCallback.Failure.Run<int>());
 
-            return Task.FromResult(ProcessElbowAction(command, findRobotCallback.Result));
+            return Task.FromResult(ProcessElbowAction(command, findRobotCallback.Success));
         }
 
-        private Try<Exception, int> ProcessElbowAction(ElbowCommand command, RobotAgreggate robot)
+        private Result<Exception, int> ProcessElbowAction(ElbowCommand command, RobotAgreggate robot)
         {
-            Try<Exception, int> actionCallback;
+            Result<Exception, int> actionCallback;
             switch (command.ElbowSide.ToLower())
             {
                 case "left":
@@ -43,12 +44,12 @@ namespace robot.Application.Features.Robo.Handlers
             }
 
             if (actionCallback.IsSuccess)
-                return PersistRobotState(robot, actionCallback.Result);
+                return PersistRobotState(robot, actionCallback.Success);
 
             return actionCallback.Failure;
         }
 
-        private Try<Exception, int> ExecuteActionInLeftElbow(RobotAgreggate robot, string action)
+        private Result<Exception, int> ExecuteActionInLeftElbow(RobotAgreggate robot, string action)
         {
             switch (action.ToLower())
             {
@@ -61,7 +62,7 @@ namespace robot.Application.Features.Robo.Handlers
             }
         }
 
-        private Try<Exception, int> ExecuteActionInRightElbow(RobotAgreggate robot, string action)
+        private Result<Exception, int> ExecuteActionInRightElbow(RobotAgreggate robot, string action)
         {
             switch (action.ToLower())
             {
@@ -74,7 +75,7 @@ namespace robot.Application.Features.Robo.Handlers
             }
         }
 
-        private Try<Exception, int> PersistRobotState(RobotAgreggate robot, int state)
+        private Result<Exception, int> PersistRobotState(RobotAgreggate robot, int state)
         {
             var updateCallback = _repository.Update(robot);
 

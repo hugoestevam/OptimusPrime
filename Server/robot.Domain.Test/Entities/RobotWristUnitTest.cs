@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using robot.Domain.Exceptions;
+using robot.Domain.Results;
 using robot.Domain.Features.Robo;
 using robot.Domain.Test.Initialize;
 using Shouldly;
@@ -30,7 +31,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(45);
+            result.Success.ShouldBe(45);
             robot.LeftWristDirection.ShouldBe(45);
         }
 
@@ -48,7 +49,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(-45);
+            result.Success.ShouldBe(-45);
             robot.LeftWristDirection.ShouldBe(-45);
         }
 
@@ -66,7 +67,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(45);
+            result.Success.ShouldBe(45);
             robot.RightWristDirection.ShouldBe(45);
         }
 
@@ -84,7 +85,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(-45);
+            result.Success.ShouldBe(-45);
             robot.RightWristDirection.ShouldBe(-45);
         }
 

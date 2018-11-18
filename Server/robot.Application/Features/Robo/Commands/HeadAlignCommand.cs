@@ -3,12 +3,12 @@ using FluentValidation.Results;
 using MediatR;
 using Newtonsoft.Json;
 using robot.Domain;
-using robot.Domain.Exceptions;
+using robot.Domain.Results;
 using System;
 
 namespace robot.Application.Features.Robo.Commands
 {
-    public class HeadAlignCommand : IRequest<Try<Exception, int>>
+    public class HeadAlignCommand : IRequest<Result<Exception, int>>
     {
         public string HeadMove { get; set; }
         [JsonIgnore]

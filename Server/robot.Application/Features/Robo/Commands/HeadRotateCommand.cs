@@ -2,12 +2,12 @@
 using FluentValidation.Results;
 using MediatR;
 using Newtonsoft.Json;
-using robot.Domain.Exceptions;
+using robot.Domain.Results;
 using System;
 
 namespace robot.Application.Features.Robo.Commands
 {
-    public class HeadRotateCommand : IRequest<Try<Exception, int>>
+    public class HeadRotateCommand : IRequest<Result<Exception, int>>
     {
         public string HeadRotate { get; set; }
         [JsonIgnore]

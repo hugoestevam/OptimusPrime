@@ -1,12 +1,12 @@
 ﻿using FluentValidation;
 using MediatR;
-using robot.Domain.Exceptions;
+using robot.Domain.Results;
 using System;
 using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Commands
 {
-    public class RobotCreateCommand : IRequest<Try<Exception, RobotAgreggate>>
+    public class RobotCreateCommand : IRequest<Result<Exception, RobotAgreggate>>
     {
         public string RobotName { get; set; }
     }

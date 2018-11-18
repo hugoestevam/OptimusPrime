@@ -1,5 +1,6 @@
 ﻿using NUnit.Framework;
 using robot.Domain.Exceptions;
+using robot.Domain.Results;
 using robot.Domain.Features.Robo;
 using robot.Domain.Test.Initialize;
 using Shouldly;
@@ -27,7 +28,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(135);
+            result.Success.ShouldBe(135);
             robot.LeftElbowPosition.ShouldBe(135);
         }
 
@@ -42,7 +43,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(135);
+            result.Success.ShouldBe(135);
             robot.RightElbowPosition.ShouldBe(135);
         }
 
@@ -60,7 +61,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(90);
+            result.Success.ShouldBe(90);
             robot.LeftElbowPosition.ShouldBe(90);
         }
 
@@ -78,7 +79,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(90);
+            result.Success.ShouldBe(90);
             robot.RightElbowPosition.ShouldBe(90);
         }
 
@@ -160,7 +161,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(90);
+            result.Success.ShouldBe(90);
             robot.LeftElbowPosition.ShouldBe(90);
         }
 
@@ -179,7 +180,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(135);
+            result.Success.ShouldBe(135);
             robot.LeftElbowPosition.ShouldBe(135);
         }
 
@@ -198,7 +199,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(90);
+            result.Success.ShouldBe(90);
             robot.LeftElbowPosition.ShouldBe(90);
             robot.LeftWristDirection.ShouldBe(0);
         }
@@ -218,7 +219,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(90);
+            result.Success.ShouldBe(90);
             robot.RightElbowPosition.ShouldBe(90);
             robot.RightWristDirection.ShouldBe(0);
         }

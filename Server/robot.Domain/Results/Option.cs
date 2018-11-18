@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace robot.Domain.Exceptions
+namespace robot.Domain.Results
 {
     using static Helpers;
 

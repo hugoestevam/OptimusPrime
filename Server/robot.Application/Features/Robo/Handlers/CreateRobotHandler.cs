@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using robot.Application.Features.Robo.Commands;
-using robot.Domain.Exceptions;
+using robot.Domain.Results;
 using System;
 using System.Threading;
 using System.Threading.Tasks;
@@ -8,7 +8,7 @@ using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Handlers
 {
-    public class CreateRobotHandler : IRequestHandler<RobotCreateCommand, Try<Exception, RobotAgreggate>>
+    public class CreateRobotHandler : IRequestHandler<RobotCreateCommand, Result<Exception, RobotAgreggate>>
     {
         private readonly IRobotRepository _repository;
 
@@ -17,7 +17,7 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public Task<Try<Exception, RobotAgreggate>> Handle(RobotCreateCommand command, CancellationToken cancellationToken)
+        public Task<Result<Exception, RobotAgreggate>> Handle(RobotCreateCommand command, CancellationToken cancellationToken)
         {
             AbstractRobotFactory creator = new ConcreteRobotFactory();
 

@@ -1,8 +1,9 @@
 ﻿using NUnit.Framework;
-using robot.Domain.Exceptions;
+using robot.Domain.Results;
 using robot.Domain.Test.Initialize;
 using Shouldly;
 using System;
+using robot.Domain.Exceptions;
 using robot.Domain.Features.Robo;
 
 namespace robot.Domain.Test
@@ -28,7 +29,7 @@ namespace robot.Domain.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(Align.Top);
+            result.Success.ShouldBe(Align.Top);
             robot.HeadAlign.ShouldBe(Align.Top);
         }
 
@@ -45,7 +46,7 @@ namespace robot.Domain.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(Align.Normal);
+            result.Success.ShouldBe(Align.Normal);
             robot.HeadAlign.ShouldBe(Align.Normal);
         }
 
@@ -77,7 +78,7 @@ namespace robot.Domain.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(Align.Botton);
+            result.Success.ShouldBe(Align.Botton);
             robot.HeadAlign.ShouldBe(Align.Botton);
         }
 
@@ -94,7 +95,7 @@ namespace robot.Domain.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Result.ShouldBe(Align.Normal);
+            result.Success.ShouldBe(Align.Normal);
             robot.HeadAlign.ShouldBe(Align.Normal);
         }
 

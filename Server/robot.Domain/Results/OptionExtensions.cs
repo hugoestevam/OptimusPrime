@@ -1,4 +1,4 @@
-﻿namespace robot.Domain.Exceptions
+﻿namespace robot.Domain.Results
 {
     public static class Option
     {
