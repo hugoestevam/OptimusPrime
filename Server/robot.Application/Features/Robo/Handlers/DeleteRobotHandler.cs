@@ -23,13 +23,6 @@ namespace robot.Application.Features.Robo.Handlers
 
         public Task<Try<Exception, Result>> Handle(RobotDeleteCommand command, CancellationToken cancellationToken)
         {
-            var result = command.Validate();
-
-            if (!result.IsValid)
-                return Task
-                        .FromResult(new ValidationException(result.Errors)
-                        .Run<Result>());
-
             return Task.FromResult(_repository.Delete(command.RobotId));
         }
     }

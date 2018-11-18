@@ -13,20 +13,16 @@ namespace robot.Application.Features.Robo.Commands
         public string ElbowAction { get; set; }
         [JsonIgnore]
         public string RobotId { get; set; }
+       
+    }
 
-        public ValidationResult Validate()
+    public class ElbowCommandValidator : AbstractValidator<ElbowCommand>
+    {
+        public ElbowCommandValidator()
         {
-            return new Validator().Validate(this);
-        }
-
-        private class Validator : AbstractValidator<ElbowCommand>
-        {
-            public Validator()
-            {
-                RuleFor(m => m.ElbowSide).NotEmpty();
-                RuleFor(m => m.ElbowAction).NotEmpty();
-                RuleFor(m => m.RobotId).NotEmpty();
-            }
+            RuleFor(m => m.ElbowSide).NotEmpty();
+            RuleFor(m => m.ElbowAction).NotEmpty();
+            RuleFor(m => m.RobotId).NotEmpty();
         }
     }
 }

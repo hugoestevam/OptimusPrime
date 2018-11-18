@@ -23,19 +23,12 @@ namespace robot.Application.Features.Robo.Handlers
 
         public Task<Try<Exception, int>> Handle(HeadRotateCommand command, CancellationToken cancellationToken)
         {
-            var result = command.Validate();
-
-            if (!result.IsValid)
-                return Task
-                        .FromResult(new ValidationException(result.Errors)
-                        .Run<int>());
-
             var findRobotCallback = _repository.Get(command.RobotId);
 
-            if (findRobotCallback.IsSuccess)
-                return Task.FromResult(ProcessHeadRotate(command, findRobotCallback.Result));
+            if (!findRobotCallback.IsSuccess)
+                return Task.FromResult(findRobotCallback.Failure.Run<int>());
 
-            return Task.FromResult(findRobotCallback.Failure.Run<int>());
+            return Task.FromResult(ProcessHeadRotate(command, findRobotCallback.Result)); 
         }
 
         private Try<Exception, int> ProcessHeadRotate(HeadRotateCommand command, Robot robot)

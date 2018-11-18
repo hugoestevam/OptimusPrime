@@ -10,18 +10,13 @@ namespace robot.Application.Features.Robo.Commands
     public class RobotCreateCommand : IRequest<Try<Exception, Robot>>
     {
         public string RobotName { get; set; }
+    }
 
-        public ValidationResult Validate()
+    public class RobotCreateCommandValidator : AbstractValidator<RobotCreateCommand>
+    {
+        public RobotCreateCommandValidator()
         {
-            return new Validator().Validate(this);
-        }
-
-        private class Validator : AbstractValidator<RobotCreateCommand>
-        {
-            public Validator()
-            {
-                RuleFor(m => m.RobotName).NotEmpty();
-            }
+            RuleFor(m => m.RobotName).NotEmpty();
         }
     }
 }

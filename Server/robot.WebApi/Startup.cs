@@ -1,25 +1,19 @@
 ﻿using System;
 using System.IO;
-using System.Linq;
 using System.Reflection;
-using AutoMapper;
-using FluentValidation;
-using FluentValidation.AspNetCore;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using robot.Application;
-using robot.Application.Features;
-using robot.Domain.Contract;
-using robot.Infra.Data;
+using SimpleInjector;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace robot.WebApi
 {
     public class Startup
     {
+        private Container container = new Container();
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -33,10 +27,9 @@ namespace robot.WebApi
 
             services.AddCors();
 
-            Mapper.Initialize(cfg =>
-            {
-                cfg.AddProfile<MappingProfile>();
-            });            
+            services.AddAutoMapper();         
+
+            services.AddSimpleInjector(container);
 
             // Registra o Swagger para documentar a API
             services.AddSwaggerGen(c =>
@@ -67,16 +60,14 @@ namespace robot.WebApi
                 c.IncludeXmlComments(xmlPath);
             });
 
-            services.AddScoped<ServiceFactory>(p => p.GetService);
+            // Registra os Repositorios que mantém a persistência do Robo
+            services.AddRepositories(container);
 
-            // Registra o Repositorio que mantém o cache do Robo
-            services.AddSingleton<IRobotRepository, RobotRepository>();
+            // Registra os Validators que executam as validações dos Inputs
+            services.AddValidators(container);
 
-            // Registra o Mediator que manipula as chamadas
-            services.Scan(scan => scan
-                .FromAssembliesOf(typeof(IMediator), typeof(AppModule))
-                .AddClasses()
-                .AsImplementedInterfaces());            
+            // Registra o Mediator que manipula as chamadas (no caso MediatR)
+            services.AddMediator(container);          
 
             services.BuildServiceProvider();
         }
@@ -103,6 +94,10 @@ namespace robot.WebApi
                               .AllowAnyHeader());
 
             app.UseMvc();
+
+            container.RegisterMvcControllers(app);
+
+            container.Verify();
         }
     }
 }
