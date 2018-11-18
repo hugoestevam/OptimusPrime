@@ -2,14 +2,14 @@
 using Microsoft.AspNetCore.Mvc;
 using robot.Application.Features.Robo.Commands;
 using robot.Application.Features.Robo.Queries;
-using robot.Application.Features.Robo.ViewModels;
-using robot.Domain;
 using robot.Domain.Exceptions;
 using robot.WebApi.Exceptions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
+using robot.Domain;
+using robot.WebApi.Base;
 
-namespace robot.WebApi.Controllers
+namespace robot.WebApi.Features.Robo
 {
     [Route("v1/[controller]")]
     public class RobotController : ApiControllerBase

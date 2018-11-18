@@ -2,11 +2,11 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using robot.Application.Features;
 using robot.Domain.Contract;
 using robot.Infra.Data;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using robot.WebApi.Features.Robo;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;
 using SimpleInjector.Lifestyles;
@@ -54,7 +54,7 @@ namespace robot.WebApi
         {
             Mapper.Initialize(cfg =>
             {
-                cfg.AddProfile<MappingProfile>();
+                cfg.AddProfile<RobotMappingProfile>();
             });
         }
     }
