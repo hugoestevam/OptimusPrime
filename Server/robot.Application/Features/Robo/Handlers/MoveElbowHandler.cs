@@ -1,14 +1,10 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using robot.Application.Features.Robo.Commands;
-using robot.Domain;
-using robot.Domain.Contract;
 using robot.Domain.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Handlers
 {
@@ -31,7 +27,7 @@ namespace robot.Application.Features.Robo.Handlers
             return Task.FromResult(ProcessElbowAction(command, findRobotCallback.Result));
         }
 
-        private Try<Exception, int> ProcessElbowAction(ElbowCommand command, Robot robot)
+        private Try<Exception, int> ProcessElbowAction(ElbowCommand command, RobotAgreggate robot)
         {
             Try<Exception, int> actionCallback;
             switch (command.ElbowSide.ToLower())
@@ -52,7 +48,7 @@ namespace robot.Application.Features.Robo.Handlers
             return actionCallback.Failure;
         }
 
-        private Try<Exception, int> ExecuteActionInLeftElbow(Robot robot, string action)
+        private Try<Exception, int> ExecuteActionInLeftElbow(RobotAgreggate robot, string action)
         {
             switch (action.ToLower())
             {
@@ -65,7 +61,7 @@ namespace robot.Application.Features.Robo.Handlers
             }
         }
 
-        private Try<Exception, int> ExecuteActionInRightElbow(Robot robot, string action)
+        private Try<Exception, int> ExecuteActionInRightElbow(RobotAgreggate robot, string action)
         {
             switch (action.ToLower())
             {
@@ -78,7 +74,7 @@ namespace robot.Application.Features.Robo.Handlers
             }
         }
 
-        private Try<Exception, int> PersistRobotState(Robot robot, int state)
+        private Try<Exception, int> PersistRobotState(RobotAgreggate robot, int state)
         {
             var updateCallback = _repository.Update(robot);
 

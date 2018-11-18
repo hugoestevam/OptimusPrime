@@ -2,10 +2,10 @@
 using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
-using robot.Domain.Contract;
 using robot.Infra.Data;
 using System.Reflection;
 using Microsoft.AspNetCore.Mvc.Controllers;
+using robot.Domain.Features.Robo;
 using robot.WebApi.Features.Robo;
 using SimpleInjector;
 using SimpleInjector.Integration.AspNetCore.Mvc;

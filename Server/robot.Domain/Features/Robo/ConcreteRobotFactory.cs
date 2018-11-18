@@ -1,11 +1,11 @@
-﻿namespace robot.Domain.Factory
+﻿namespace robot.Domain.Features.Robo
 {
     /// <summary>
     ///Classe que define o estado padrão de criação do Robo
     /// </summary>
-    public class ConcreteCreatorRobot : Creator
+    public class ConcreteRobotFactory : AbstractRobotFactory
     {
-        public override Robot MakeARobot()
+        public override RobotAgreggate MakeARobot()
         {
             return new DefaultRobot();
         }
@@ -14,7 +14,7 @@
         /// Classe que representa o Robo concreto no seu estado
         /// padrão de criação
         /// </summary>
-        private class DefaultRobot : Robot
+        private class DefaultRobot : RobotAgreggate
         {
             public DefaultRobot()
             {                

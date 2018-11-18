@@ -1,7 +1,7 @@
 ﻿using System;
 using robot.Domain.Exceptions;
 
-namespace robot.Domain
+namespace robot.Domain.Features.Robo
 {
     /// <summary>
     /// Essa classe representa o status de cada cotovelo do robo

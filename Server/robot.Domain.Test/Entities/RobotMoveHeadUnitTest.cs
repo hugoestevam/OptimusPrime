@@ -1,27 +1,27 @@
 ﻿using NUnit.Framework;
 using robot.Domain.Exceptions;
-using robot.Domain.Factory;
 using robot.Domain.Test.Initialize;
 using Shouldly;
 using System;
+using robot.Domain.Features.Robo;
 
 namespace robot.Domain.Test
 {
     public class RobotMoveHeadUnitTest
     {
-        Creator creator;
+        AbstractRobotFactory creator;
 
         [SetUp]
         public void Setup()
         {
-            creator = new ConcreteCreatorRobot();
+            creator = new ConcreteRobotFactory();
         }
 
         [Test]
         public void MoveHeadForUpTest()
         {
             //Arrange
-            Robot robot = creator.MakeARobot();
+            RobotAgreggate robot = creator.MakeARobot();
 
             //Action
             var result = robot.MoveHeadForUp();
@@ -70,7 +70,7 @@ namespace robot.Domain.Test
         public void MoveHeadToBelowTest()
         {
             //Arrange
-            Robot robot = creator.MakeARobot();
+            RobotAgreggate robot = creator.MakeARobot();
 
             //Action
             var result = robot.MoveHeadToBelow();

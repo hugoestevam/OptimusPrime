@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using robot.Domain.Exceptions;
-using robot.Domain.Factory;
+using robot.Domain.Features.Robo;
 using robot.Domain.Test.Initialize;
 using Shouldly;
 
@@ -8,19 +8,19 @@ namespace robot.Domain.Test.Entities
 {
     public class RobotElbowUnitTest
     {
-        Creator creator;
+        AbstractRobotFactory creator;
 
         [SetUp]
         public void Setup()
         {
-            creator = new ConcreteCreatorRobot();
+            creator = new ConcreteRobotFactory();
         }
 
         [Test]
         public void CollapseLeftElbowTest()
         {
             //Arrange
-            Robot robot = creator.MakeARobot();
+            RobotAgreggate robot = creator.MakeARobot();
 
             //Action
             var result = robot.LeftElbowCollapse();
@@ -35,7 +35,7 @@ namespace robot.Domain.Test.Entities
         public void CollapseRightElbowTest()
         {
             //Arrange
-            Robot robot = creator.MakeARobot();
+            RobotAgreggate robot = creator.MakeARobot();
 
             //Action
             var result = robot.RightElbowCollapse();
@@ -122,7 +122,7 @@ namespace robot.Domain.Test.Entities
         public void ExpandLeftElbowDenyTest()
         {
             //Arrange
-            Robot robot = creator.MakeARobot();
+            RobotAgreggate robot = creator.MakeARobot();
 
             //Action
             var result = robot.LeftElbowExpand();
@@ -137,7 +137,7 @@ namespace robot.Domain.Test.Entities
         public void ExpandRightElbowDenyTest()
         {
             //Arrange
-            Robot robot = creator.MakeARobot();
+            RobotAgreggate robot = creator.MakeARobot();
 
             //Action
             var result = robot.RightElbowExpand();
@@ -152,7 +152,7 @@ namespace robot.Domain.Test.Entities
         public void CollapseLeftElbowTwoTimesTest()
         {
             //Arrange
-            Robot robot = creator.MakeARobot();
+            RobotAgreggate robot = creator.MakeARobot();
 
             //Action
             robot.LeftElbowCollapse();

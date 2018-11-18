@@ -7,6 +7,7 @@ using robot.WebApi.Exceptions;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 using robot.Domain;
+using robot.Domain.Features.Robo;
 using robot.WebApi.Base;
 
 namespace robot.WebApi.Features.Robo
@@ -41,7 +42,7 @@ namespace robot.WebApi.Features.Robo
         {
             var response = await _mediator.Send(new Query());
 
-            return HandleQueryList<Robot, RobotViewModel>(response);
+            return HandleQueryList<RobotAgreggate, RobotViewModel>(response);
         }
 
         /// <summary>
@@ -63,7 +64,7 @@ namespace robot.WebApi.Features.Robo
         {
             var response = await _mediator.Send(new RobotQuery(id));
 
-            return HandleQuery<Robot, RobotViewModel>(response);
+            return HandleQuery<RobotAgreggate, RobotViewModel>(response);
         }
 
         #endregion

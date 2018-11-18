@@ -1,24 +1,23 @@
 using NUnit.Framework;
-using robot.Domain;
-using robot.Domain.Factory;
+using robot.Domain.Features.Robo;
 using Shouldly;
 
 namespace Tests
 {
     public class RobotCreatorUnitTests
     {
-        Creator creator;
+        AbstractRobotFactory creator;
 
         [SetUp]
         public void Setup()
         {
-            creator = new ConcreteCreatorRobot();
+            creator = new ConcreteRobotFactory();
         }
 
         [Test]
         public void ARobotCreatedTest()
         {
-            Robot robot = creator.MakeARobot();
+            RobotAgreggate robot = creator.MakeARobot();
             //head
                 //align
                 //direction

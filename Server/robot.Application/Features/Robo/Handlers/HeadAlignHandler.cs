@@ -1,14 +1,10 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using robot.Application.Features.Robo.Commands;
-using robot.Domain;
-using robot.Domain.Contract;
 using robot.Domain.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Handlers
 {
@@ -31,7 +27,7 @@ namespace robot.Application.Features.Robo.Handlers
             return Task.FromResult(ProcessHeadAlign(command, findRobotCallback.Result));
         }
 
-        private Try<Exception, int> ProcessHeadAlign(HeadAlignCommand command, Robot robot)
+        private Try<Exception, int> ProcessHeadAlign(HeadAlignCommand command, RobotAgreggate robot)
         {
             Try<Exception, Align> moveCallback;
 
@@ -53,7 +49,7 @@ namespace robot.Application.Features.Robo.Handlers
             return moveCallback.Failure;
         }
 
-        private Try<Exception, int> PersistRobotState(Robot robot, int state)
+        private Try<Exception, int> PersistRobotState(RobotAgreggate robot, int state)
         {
             var updateCallback = _repository.Update(robot);
 

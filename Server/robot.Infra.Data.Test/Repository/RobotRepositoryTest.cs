@@ -1,8 +1,6 @@
 ﻿using NUnit.Framework;
-using robot.Domain;
-using robot.Domain.Contract;
 using robot.Domain.Exceptions;
-using robot.Domain.Factory;
+using robot.Domain.Features.Robo;
 using robot.Domain.Test.Initialize;
 using Shouldly;
 
@@ -10,7 +8,7 @@ namespace robot.Infra.Data.Test
 {
     public class RobotRepositoryTest
     {
-        Creator creator;
+        AbstractRobotFactory creator;
         IRobotRepository repository;
 
         [SetUp]
@@ -24,7 +22,7 @@ namespace robot.Infra.Data.Test
         {
             //Arrange
             creator = new MockCreatorRobot();
-            Robot robot = creator.MakeARobot();
+            RobotAgreggate robot = creator.MakeARobot();
 
             //Action
             var result = repository.Add(robot);
@@ -58,7 +56,7 @@ namespace robot.Infra.Data.Test
         public void RepositoryUpdateRobotTest()
         {
             //Arrange
-            Robot robot = null;
+            RobotAgreggate robot = null;
             robot = repository.Get("099153c2625149bc8ecb3e85e03f0022").Result;
 
             //Action

@@ -1,11 +1,9 @@
-﻿using System;
-
-namespace robot.Domain
+﻿namespace robot.Domain.Features.Robo
 {
     /// <summary>
     /// 
     /// </summary>
-    public class MockRobot : Robot
+    public class MockRobot : RobotAgreggate
     {        
         public MockRobot()
         {

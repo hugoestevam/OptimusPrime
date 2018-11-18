@@ -1,19 +1,14 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using robot.Application.Features.Robo.Commands;
-using robot.Domain;
-using robot.Domain.Contract;
 using robot.Domain.Exceptions;
-using robot.Domain.Factory;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Handlers
 {
-    public class CreateRobotHandler : IRequestHandler<RobotCreateCommand, Try<Exception, Robot>>
+    public class CreateRobotHandler : IRequestHandler<RobotCreateCommand, Try<Exception, RobotAgreggate>>
     {
         private readonly IRobotRepository _repository;
 
@@ -22,9 +17,9 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public Task<Try<Exception, Robot>> Handle(RobotCreateCommand command, CancellationToken cancellationToken)
+        public Task<Try<Exception, RobotAgreggate>> Handle(RobotCreateCommand command, CancellationToken cancellationToken)
         {
-            Creator creator = new ConcreteCreatorRobot();
+            AbstractRobotFactory creator = new ConcreteRobotFactory();
 
             var robot = creator.MakeARobot();
             robot.RobotName = command.RobotName;

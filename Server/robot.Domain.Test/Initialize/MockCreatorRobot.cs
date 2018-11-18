@@ -1,5 +1,5 @@
 ﻿using Moq;
-using robot.Domain.Factory;
+using robot.Domain.Features.Robo;
 
 namespace robot.Domain.Test.Initialize
 {
@@ -7,9 +7,9 @@ namespace robot.Domain.Test.Initialize
     /// Classe que Imita a criação do Robo
     /// Essa classe é utilizada somente para testes
     /// </summary>
-    public class MockCreatorRobot : Creator
+    public class MockCreatorRobot : AbstractRobotFactory
     {
-        public override Robot MakeARobot()
+        public override RobotAgreggate MakeARobot()
         {
             return new MockRobot();
         }

@@ -1,7 +1,7 @@
 ﻿using robot.Domain.Exceptions;
 using System;
 
-namespace robot.Domain
+namespace robot.Domain.Features.Robo
 {
     public enum Align : int
     {

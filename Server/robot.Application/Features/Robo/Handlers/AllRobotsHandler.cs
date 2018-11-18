@@ -1,17 +1,15 @@
 ﻿using MediatR;
 using robot.Application.Features.Robo.Queries;
-using robot.Domain;
-using robot.Domain.Contract;
 using robot.Domain.Exceptions;
 using System;
 using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Handlers
 {
-    public class Handler : IRequestHandler<Query, Try<Exception, List<Robot>>>
+    public class Handler : IRequestHandler<Query, Try<Exception, List<RobotAgreggate>>>
     {
         private readonly IRobotRepository _repository;
 
@@ -20,7 +18,7 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public Task<Try<Exception, List<Robot>>> Handle(Query request, CancellationToken cancellationToken)
+        public Task<Try<Exception, List<RobotAgreggate>>> Handle(Query request, CancellationToken cancellationToken)
         {
             return Task.FromResult(_repository.GetAll());
         }

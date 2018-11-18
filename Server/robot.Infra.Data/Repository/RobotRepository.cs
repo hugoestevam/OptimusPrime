@@ -1,11 +1,9 @@
-﻿using robot.Domain;
-using robot.Domain.Contract;
-using robot.Domain.Exceptions;
-using robot.Domain.Factory;
+﻿using robot.Domain.Exceptions;
 using System;
 using System.Collections.Concurrent;
 using System.Collections.Generic;
 using System.Linq;
+using robot.Domain.Features.Robo;
 
 namespace robot.Infra.Data
 {
@@ -15,16 +13,16 @@ namespace robot.Infra.Data
     /// </summary>
     public class RobotRepository : IRobotRepository
     {
-        private readonly ConcurrentDictionary<string, Robot> _cache;
+        private readonly ConcurrentDictionary<string, RobotAgreggate> _cache;
         public RobotRepository()
         {
-            _cache = new ConcurrentDictionary<string, Robot>();
-            Robot robot = new ConcreteCreatorRobot().MakeARobot();
+            _cache = new ConcurrentDictionary<string, RobotAgreggate>();
+            RobotAgreggate robot = new ConcreteRobotFactory().MakeARobot();
             robot.RobotId = "099153c2625149bc8ecb3e85e03f0022";
             robot.RobotName = "EuRobo";
             _cache.GetOrAdd(robot.RobotId, robot);
         }
-        public Try<Exception, Robot> Add(Robot robot)
+        public Try<Exception, RobotAgreggate> Add(RobotAgreggate robot)
         {
             var robotId = Guid.NewGuid().ToString("N");
 
@@ -35,16 +33,16 @@ namespace robot.Infra.Data
 
         public Try<Exception, Result> Delete(string robotId)
         {
-            Robot robot;
+            RobotAgreggate robot;
             if (_cache.TryRemove(robotId, out robot))
                 return Result.Successful;
 
             return new InvalidOperationException($"Erro ao remover o robo: {robotId}");
         }
 
-        public Try<Exception, Robot> Get(string robotId)
+        public Try<Exception, RobotAgreggate> Get(string robotId)
         {
-            Robot robot = null;
+            RobotAgreggate robot = null;
             if (_cache.TryGetValue(robotId, out robot))
             {
                 return robot;
@@ -52,14 +50,14 @@ namespace robot.Infra.Data
             return new NotFoundException();
         }
 
-        public Try<Exception, List<Robot>> GetAll()
+        public Try<Exception, List<RobotAgreggate>> GetAll()
         {
             return Try.Run( () => _cache.Values.ToList());
         }
 
-        public Try<Exception, Robot> Update(Robot robot)
+        public Try<Exception, RobotAgreggate> Update(RobotAgreggate robot)
         {
-            Robot actualRobot = null;
+            RobotAgreggate actualRobot = null;
             _cache.TryGetValue(robot.RobotId, out actualRobot);
             
             if (_cache.TryUpdate(robot.RobotId, robot, actualRobot))

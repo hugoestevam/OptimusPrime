@@ -1,6 +1,6 @@
 ﻿using NUnit.Framework;
 using robot.Domain.Exceptions;
-using robot.Domain.Factory;
+using robot.Domain.Features.Robo;
 using robot.Domain.Test.Initialize;
 using Shouldly;
 
@@ -8,12 +8,12 @@ namespace robot.Domain.Test.Entities
 {
     public class RobotWristUnitTest
     {
-        Creator creator;
+        AbstractRobotFactory creator;
 
         [SetUp]
         public void Setup()
         {
-            creator = new ConcreteCreatorRobot();
+            creator = new ConcreteRobotFactory();
         }
 
         [Test]

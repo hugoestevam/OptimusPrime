@@ -1,11 +1,11 @@
 ﻿using robot.Domain.Exceptions;
 using System;
 
-namespace robot.Domain
+namespace robot.Domain.Features.Robo
 {
-    public abstract class Robot
+    public abstract class RobotAgreggate
     {
-        protected Robot() { }
+        protected RobotAgreggate() { }
 
         public Align HeadAlign => Head.Align;
         public int HeadDirection => Head.Direction;

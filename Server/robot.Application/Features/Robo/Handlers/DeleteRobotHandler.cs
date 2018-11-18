@@ -1,14 +1,10 @@
-﻿using FluentValidation;
-using MediatR;
+﻿using MediatR;
 using robot.Application.Features.Robo.Commands;
-using robot.Domain;
-using robot.Domain.Contract;
 using robot.Domain.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
+using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Handlers
 {
