@@ -3,37 +3,51 @@ using FluentValidation;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using robot.Application.Features;
-using robot.Application.Features.Robo.Queries;
 using robot.Domain.Contract;
 using robot.Infra.Data;
 using System.Reflection;
+using Microsoft.AspNetCore.Mvc.Controllers;
+using SimpleInjector;
+using SimpleInjector.Integration.AspNetCore.Mvc;
+using SimpleInjector.Lifestyles;
 
 namespace robot.WebApi
 {
     public static class Setup
     {
-        public static void AddMediator(this IServiceCollection services)
-        {            
-            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(Behaviours.MeasureTimePipeline<,>));
-            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(Behaviours.ValidateCommandPipeline<,>));            
+        public static void AddSimpleInjector(this IServiceCollection services, Container container)
+        {
+            container.Options.DefaultScopedLifestyle = new AsyncScopedLifestyle();
+          
+            services.AddSingleton<IControllerActivator>(new SimpleInjectorControllerActivator(container));
 
-            services.AddMediatR(typeof(Application.AppModule).GetTypeInfo().Assembly);
+            services.UseSimpleInjectorAspNetRequestScoping(container);
         }
 
-        public static void AddRepositories(this IServiceCollection services)
+        public static void AddMediator(this IServiceCollection services, Container container)
         {
-            services.AddSingleton<IRobotRepository, RobotRepository>();
+            var assemblies = typeof(Application.AppModule).GetTypeInfo().Assembly;
+
+            container.RegisterSingleton<IMediator, Mediator>();
+            container.Register(() => new ServiceFactory(container.GetInstance), Lifestyle.Singleton);
+            container.Register(typeof(IRequestHandler<,>), assemblies);
+            container.Register(typeof(IRequestHandler<>), assemblies);
+            container.Collection.Register(typeof(INotificationHandler<>), assemblies);
+            container.Collection.Register(typeof(IPipelineBehavior<,>), new[]
+            {
+                typeof(Behaviours.MeasureTimePipeline<,>),
+                typeof(Behaviours.ValidateCommandPipeline<,>)
+            });
         }
 
-        public static void AddValidators(this IServiceCollection services)
+        public static void AddRepositories(this IServiceCollection services, Container container)
         {
-            //TODO: Colocar o SimpleInjector, pois o Dependency Injector do ASP.NET Core está com bug na utilização de Generic Constrants
-            services.Add(ServiceDescriptor.Transient(typeof(IValidator<RobotQuery>), typeof(RobotQueryValidator)));
-            //services.Scan(scan => scan
-            //   .FromAssembliesOf(typeof(Application.AppModule))
-            //   .AddClasses(cls => cls.AssignableTo(typeof(IValidator<>)))
-            //    .AsImplementedInterfaces()
-            //    .WithTransientLifetime());
+            container.RegisterSingleton<IRobotRepository, RobotRepository>();
+        }
+
+        public static void AddValidators(this IServiceCollection services, Container container)
+        {
+            container.Collection.Register(typeof(IValidator<>), typeof(Application.AppModule).GetTypeInfo().Assembly);
         }
 
         public static void AddAutoMapper(this IServiceCollection services)

@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
 using robot.Domain;
 using robot.Domain.Exceptions;

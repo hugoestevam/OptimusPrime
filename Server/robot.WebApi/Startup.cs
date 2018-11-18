@@ -1,23 +1,19 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
-using AutoMapper;
-using FluentValidation.AspNetCore;
-using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
-using robot.Application;
-using robot.Application.Features;
-using robot.Domain.Contract;
-using robot.Infra.Data;
+using SimpleInjector;
 using Swashbuckle.AspNetCore.Swagger;
 
 namespace robot.WebApi
 {
     public class Startup
     {
+        private Container container = new Container();
+
         public Startup(IConfiguration configuration)
         {
             Configuration = configuration;
@@ -32,6 +28,8 @@ namespace robot.WebApi
             services.AddCors();
 
             services.AddAutoMapper();         
+
+            services.AddSimpleInjector(container);
 
             // Registra o Swagger para documentar a API
             services.AddSwaggerGen(c =>
@@ -63,13 +61,13 @@ namespace robot.WebApi
             });
 
             // Registra os Repositorios que mantém a persistência do Robo
-            services.AddRepositories();
+            services.AddRepositories(container);
 
             // Registra os Validators que executam as validações dos Inputs
-            services.AddValidators();
+            services.AddValidators(container);
 
             // Registra o Mediator que manipula as chamadas (no caso MediatR)
-            services.AddMediator();          
+            services.AddMediator(container);          
 
             services.BuildServiceProvider();
         }
@@ -96,6 +94,10 @@ namespace robot.WebApi
                               .AllowAnyHeader());
 
             app.UseMvc();
+
+            container.RegisterMvcControllers(app);
+
+            container.Verify();
         }
     }
 }

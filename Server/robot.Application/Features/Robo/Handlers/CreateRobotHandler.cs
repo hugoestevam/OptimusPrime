@@ -24,13 +24,6 @@ namespace robot.Application.Features.Robo.Handlers
 
         public Task<Try<Exception, Robot>> Handle(RobotCreateCommand command, CancellationToken cancellationToken)
         {
-            var result = command.Validate();
-
-            if (!result.IsValid)
-                return Task
-                        .FromResult(new ValidationException(result.Errors)
-                        .Run<Robot>());
-
             Creator creator = new ConcreteCreatorRobot();
 
             var robot = creator.MakeARobot();

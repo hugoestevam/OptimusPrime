@@ -12,19 +12,14 @@ namespace robot.Application.Features.Robo.Commands
         public string HeadRotate { get; set; }
         [JsonIgnore]
         public string RobotId { get; set; }
+    }
 
-        public ValidationResult Validate()
+    public class HeadRotateCommandValidator : AbstractValidator<HeadRotateCommand>
+    {
+        public HeadRotateCommandValidator()
         {
-            return new Validator().Validate(this);
-        }
-
-        private class Validator : AbstractValidator<HeadRotateCommand>
-        {
-            public Validator()
-            {
-                RuleFor(m => m.HeadRotate).NotEmpty();
-                RuleFor(m => m.RobotId).NotEmpty();
-            }
+            RuleFor(m => m.HeadRotate).NotEmpty();
+            RuleFor(m => m.RobotId).NotEmpty();
         }
     }
 }

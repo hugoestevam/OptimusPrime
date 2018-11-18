@@ -23,19 +23,12 @@ namespace robot.Application.Features.Robo.Handlers
 
         public Task<Try<Exception, int>> Handle(WristCommand command, CancellationToken cancellationToken)
         {
-            var result = command.Validate();
-
-            if (!result.IsValid)
-                return Task
-                        .FromResult(new ValidationException(result.Errors)
-                        .Run<int>());
-
             var findRobotCallback = _repository.Get(command.RobotId);
 
-            if (findRobotCallback.IsSuccess)
-                return Task.FromResult(ProcessWristAction(command, findRobotCallback.Result));
+            if (!findRobotCallback.IsSuccess)
+                return Task.FromResult(findRobotCallback.Failure.Run<int>());
 
-            return Task.FromResult(findRobotCallback.Failure.Run<int>());
+            return Task.FromResult(ProcessWristAction(command, findRobotCallback.Result));
         }
 
         private Try<Exception, int> ProcessWristAction(WristCommand command, Robot robot)

@@ -15,18 +15,13 @@ namespace robot.Application.Features.Robo.Commands
         {
             RobotId = id;
         }
+    }
 
-        public ValidationResult Validate()
+    public class RobotDeleteCommandValidator : AbstractValidator<RobotDeleteCommand>
+    {
+        public RobotDeleteCommandValidator()
         {
-            return new Validator().Validate(this);
-        }
-
-        private class Validator : AbstractValidator<RobotDeleteCommand>
-        {
-            public Validator()
-            {
-                RuleFor(m => m.RobotId).NotEmpty();
-            }
+            RuleFor(m => m.RobotId).NotEmpty();
         }
     }
 }
