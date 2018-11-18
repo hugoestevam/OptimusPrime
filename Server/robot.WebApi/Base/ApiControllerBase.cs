@@ -10,7 +10,7 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 
-namespace robot.WebApi.Controllers
+namespace robot.WebApi.Base
 {
     public class ApiControllerBase: Controller
     {

@@ -1,15 +1,12 @@
 ﻿using AutoMapper;
-using robot.Application.Features.Robo.ViewModels;
 using robot.Domain;
-using System;
-using System.Collections.Generic;
-using System.Text;
+using robot.WebApi.Features.Robo;
 
-namespace robot.Application.Features
+namespace robot.WebApi.Features.Robo
 {
-    public class MappingProfile : Profile
+    public class RobotMappingProfile : Profile
     {
-        public MappingProfile()
+        public RobotMappingProfile()
         {
             CreateMap<Robot, RobotViewModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.RobotId))

@@ -1,4 +1,4 @@
-﻿namespace robot.Application.Features.Robo.ViewModels
+﻿namespace robot.WebApi.Features.Robo
 {
     public class RobotViewModel
     {
