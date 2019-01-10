@@ -1,5 +1,6 @@
 ﻿using MediatR;
 using robot.Application.Features.Robo.Commands;
+using robot.Application.Notification;
 using robot.Domain.Results;
 using System;
 using System.Threading;
@@ -12,10 +13,12 @@ namespace robot.Application.Features.Robo.Handlers
     public class HeadRotateHandler : IRequestHandler<HeadRotateCommand, Result<Exception, int>>
     {
         private readonly IRobotRepository _repository;
+        private readonly IMediator _mediator;
 
-        public HeadRotateHandler(IRobotRepository repository)
+        public HeadRotateHandler(IRobotRepository repository, IMediator mediator)
         {
             _repository = repository;
+            _mediator = mediator;
         }
 
         public Task<Result<Exception, int>> Handle(HeadRotateCommand command, CancellationToken cancellationToken)
@@ -42,6 +45,9 @@ namespace robot.Application.Features.Robo.Handlers
                 default:
                     return new BussinessException(ErrorCodes.BadRequest, "Comando inválido.");
             }
+
+            // Publish Domain Events
+            _mediator.PublishDomainEvents(robot.RaisedEvents());
 
             if (rotateCallback.IsSuccess)
                 return PersistRobotState(robot, rotateCallback.Success);

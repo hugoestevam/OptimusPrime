@@ -63,6 +63,7 @@ namespace robot.Domain.Test
             result.IsFailure.ShouldBeTrue();
             result.Failure.ShouldBeOfType<DeniedHeadRotateException>();
             robot.HeadDirection.ShouldBe(0);
+            robot.RaisedEvents().ShouldHaveSingleItem();
         }
 
         [Test]
@@ -81,6 +82,7 @@ namespace robot.Domain.Test
             result.IsFailure.ShouldBeTrue();
             result.Failure.ShouldBeOfType<DeniedHeadRotateException>();
             robot.HeadDirection.ShouldBe(0);
+            robot.RaisedEvents().ShouldHaveSingleItem();
         }
 
         [Test]
