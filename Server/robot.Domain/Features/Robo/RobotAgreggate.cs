@@ -4,7 +4,7 @@ using robot.Domain.Exceptions;
 
 namespace robot.Domain.Features.Robo
 {
-    public abstract class RobotAgreggate
+    public abstract class RobotAgreggate : AggregateRoot
     {
         protected RobotAgreggate() { }
 
@@ -45,7 +45,10 @@ namespace robot.Domain.Features.Robo
         public Result<Exception, int> RotateHeadToTheLeft()
         {
             if (!CanHeadRotate())
+            {
+                Raise(new DeniedHeadRotateEvent(Head, "Left"));
                 return new DeniedHeadRotateException();
+            }
 
             return Head.RotateToTheLeft();
         }
@@ -56,7 +59,10 @@ namespace robot.Domain.Features.Robo
         public Result<Exception, int> RotateHeadToTheRight()
         {
             if (!CanHeadRotate())
+            {
+                Raise(new DeniedHeadRotateEvent(Head, "Right"));
                 return new DeniedHeadRotateException();
+            }
 
             return Head.RotateToTheRight();
         }
