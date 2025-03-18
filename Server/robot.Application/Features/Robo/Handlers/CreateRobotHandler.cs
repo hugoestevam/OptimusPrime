@@ -17,14 +17,14 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public Task<Result<Exception, RobotAgreggate>> Handle(RobotCreateCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Exception, RobotAgreggate>> Handle(RobotCreateCommand command, CancellationToken cancellationToken)
         {
             AbstractRobotFactory creator = new ConcreteRobotFactory();
 
             var robot = creator.MakeARobot();
             robot.RobotName = command.RobotName;
 
-            return Task.FromResult(_repository.Add(robot));
+            return await _repository.Add(robot);
         }
     }
 }

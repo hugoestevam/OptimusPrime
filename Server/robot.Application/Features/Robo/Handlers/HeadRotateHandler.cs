@@ -21,17 +21,17 @@ namespace robot.Application.Features.Robo.Handlers
             _mediator = mediator;
         }
 
-        public Task<Result<Exception, int>> Handle(HeadRotateCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Exception, int>> Handle(HeadRotateCommand command, CancellationToken cancellationToken)
         {
-            var findRobotCallback = _repository.Get(command.RobotId);
+            var findRobotCallback = await _repository.Get(command.RobotId);
 
             if (!findRobotCallback.IsSuccess)
-                return Task.FromResult(findRobotCallback.Failure.Run<int>());
+                return findRobotCallback.Failure;
 
-            return Task.FromResult(ProcessHeadRotate(command, findRobotCallback.Success)); 
+            return await ProcessHeadRotate(command, findRobotCallback.Success); 
         }
 
-        private Result<Exception, int> ProcessHeadRotate(HeadRotateCommand command, RobotAgreggate robot)
+        private async Task<Result<Exception, int>> ProcessHeadRotate(HeadRotateCommand command, RobotAgreggate robot)
         {
             Result<Exception, int> rotateCallback;
             switch (command.HeadRotate.ToLower())
@@ -50,14 +50,14 @@ namespace robot.Application.Features.Robo.Handlers
             _mediator.PublishDomainEvents(robot.RaisedEvents());
 
             if (rotateCallback.IsSuccess)
-                return PersistRobotState(robot, rotateCallback.Success);
+                return await PersistRobotState(robot, rotateCallback.Success);
 
             return rotateCallback.Failure;
         }
 
-        private Result<Exception, int> PersistRobotState(RobotAgreggate robot, int state)
+        private async Task<Result<Exception, int>> PersistRobotState(RobotAgreggate robot, int state)
         {
-            var updateCallback = _repository.Update(robot);
+            var updateCallback = await _repository.Update(robot);
 
             if (updateCallback.IsSuccess)
                 return state;

@@ -15,8 +15,9 @@ namespace robot.Domain.Features.Robo
         public int LeftWristDirection => LeftWrist.Direction;
         public int RightWristDirection => RightWrist.Direction;
 
-        public string RobotId { get; set; }
+        public long RobotId { get; set; }
         public string RobotName { get; set; }
+        public RobotStatus Status { get; set; }
         protected virtual Head Head { get; set; }
         protected virtual Elbow LeftElbow { get; set; }        
         protected virtual Elbow RightElbow { get; set; }

@@ -9,9 +9,9 @@ namespace robot.Application.Features.Robo.Commands
 {
     public class RobotDeleteCommand : IRequest<Result<Exception, Domain.Results.Unit>>
     {
-        public string RobotId { get; set; }
+        public long RobotId { get; set; }
 
-        public RobotDeleteCommand(string id)
+        public RobotDeleteCommand(long id)
         {
             RobotId = id;
         }
@@ -21,7 +21,7 @@ namespace robot.Application.Features.Robo.Commands
     {
         public RobotDeleteCommandValidator()
         {
-            RuleFor(m => m.RobotId).NotEmpty();
+            RuleFor(m => m.RobotId).NotEqual(0);
         }
     }
 }

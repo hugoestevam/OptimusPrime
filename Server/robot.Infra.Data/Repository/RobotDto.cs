@@ -1,10 +1,13 @@
-﻿namespace robot.WebApi.Features.Robo
+using System;
+using robot.Domain.Features.Robo;
+
+namespace robot.Infra.Data.Mappers
 {
-    public class RobotViewModel
+    public class RobotDao
     {
-        public string Id { get; set; }
-        public string Name { get; set; }
-        public int Status { get; internal set; }
+        public long RobotId { get; set; }
+        public string RobotName { get; set; }
+        public int Status { get; set; }
         public int HeadAlign { get; set; }
         public int HeadDirection { get; set; }
         public int LeftElbowPosition { get; set; }

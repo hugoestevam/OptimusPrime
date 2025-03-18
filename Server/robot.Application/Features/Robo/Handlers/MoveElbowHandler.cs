@@ -18,17 +18,17 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public Task<Result<Exception, int>> Handle(ElbowCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Exception, int>> Handle(ElbowCommand command, CancellationToken cancellationToken)
         {
-            var findRobotCallback = _repository.Get(command.RobotId);
+            var findRobotCallback = await _repository.Get(command.RobotId);
 
             if (!findRobotCallback.IsSuccess)
-                return Task.FromResult(findRobotCallback.Failure.Run<int>());
+                return findRobotCallback.Failure;
 
-            return Task.FromResult(ProcessElbowAction(command, findRobotCallback.Success));
+            return await ProcessElbowAction(command, findRobotCallback.Success);
         }
 
-        private Result<Exception, int> ProcessElbowAction(ElbowCommand command, RobotAgreggate robot)
+        private async Task<Result<Exception, int>> ProcessElbowAction(ElbowCommand command, RobotAgreggate robot)
         {
             Result<Exception, int> actionCallback;
             switch (command.ElbowSide.ToLower())
@@ -44,7 +44,7 @@ namespace robot.Application.Features.Robo.Handlers
             }
 
             if (actionCallback.IsSuccess)
-                return PersistRobotState(robot, actionCallback.Success);
+                return await PersistRobotState(robot, actionCallback.Success);
 
             return actionCallback.Failure;
         }
@@ -75,9 +75,9 @@ namespace robot.Application.Features.Robo.Handlers
             }
         }
 
-        private Result<Exception, int> PersistRobotState(RobotAgreggate robot, int state)
+        private async Task<Result<Exception, int>> PersistRobotState(RobotAgreggate robot, int state)
         {
-            var updateCallback = _repository.Update(robot);
+            var updateCallback = await _repository.Update(robot);
 
             if (updateCallback.IsSuccess)
                 return state;

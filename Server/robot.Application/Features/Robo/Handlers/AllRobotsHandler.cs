@@ -6,21 +6,37 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 using robot.Domain.Features.Robo;
+using OpenTelemetry.Trace;
 
 namespace robot.Application.Features.Robo.Handlers
 {
     public class Handler : IRequestHandler<Query, Result<Exception, List<RobotAgreggate>>>
     {
         private readonly IRobotRepository _repository;
+        private readonly Tracer _tracer;
 
         public Handler(IRobotRepository repository)
         {
             _repository = repository;
+            _tracer = ApplicationTelemetry.Instance.GetTracer("RobotHandler");
         }
 
-        public Task<Result<Exception, List<RobotAgreggate>>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<Exception, List<RobotAgreggate>>> Handle(Query request, CancellationToken cancellationToken)
         {
-            return Task.FromResult(_repository.GetAll());
+            using (var span = _tracer.StartActiveSpan("HandleAllRobotsQuery"))
+            {
+                try
+                {
+                    var result = await _repository.GetAll();
+                    span.SetAttribute("robot.count", result.Success?.Count ?? 0);
+                    return result;
+                }
+                catch (Exception ex)
+                {
+                    span.SetStatus(Status.Error.WithDescription(ex.Message));
+                    return ex;
+                }
+            }
         }
     }
 }

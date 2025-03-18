@@ -8,8 +8,8 @@ namespace robot.Application.Features.Robo.Queries
 {
     public class RobotQuery : IRequest<Result<Exception, RobotAgreggate>>
     {
-        public string RobotId { get; set; }
-        public RobotQuery(string id)
+        public long RobotId { get; set; }
+        public RobotQuery(long id)
         {
             RobotId = id;
         }
@@ -19,7 +19,7 @@ namespace robot.Application.Features.Robo.Queries
     {
         public RobotQueryValidator()
         {
-            RuleFor(m => m.RobotId).NotEmpty();
+            RuleFor(m => m.RobotId).NotEqual(0);
         }
     }
 }

@@ -19,7 +19,7 @@ namespace robot.Application.Features.Robo.Handlers
 
         public Task<Result<Exception, RobotAgreggate>> Handle(RobotQuery query, CancellationToken cancellationToken)
         {
-            return Task.FromResult(_repository.Get(query.RobotId));
+            return _repository.Get(query.RobotId);
         }
     }
 }

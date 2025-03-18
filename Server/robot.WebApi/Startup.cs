@@ -1,12 +1,18 @@
 ﻿using System;
 using System.IO;
 using System.Reflection;
+using AutoMapper;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using Microsoft.OpenApi.Models;
+using robot.WebApi.Base;
 using SimpleInjector;
-using Swashbuckle.AspNetCore.Swagger;
+using OpenTelemetry.Trace;
+using OpenTelemetry.Resources;
+using OpenTelemetry.Logs;
 
 namespace robot.WebApi
 {
@@ -23,35 +29,63 @@ namespace robot.WebApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddMvc();
+            services.AddControllers();
+            
+            services.AddCors(options =>
+            {
+                options.AddPolicy("AllowSpecificOrigin",
+                    builder => builder.WithOrigins("http://localhost:4200")
+                                      .AllowAnyMethod()
+                                      .AllowAnyHeader());
+            });
 
-            services.AddCors();
-
-            services.AddAutoMapper();         
+            services.AddAutoMapper();
 
             services.AddSimpleInjector(container);
+
+            services.AddOpenTelemetry()
+                .WithLogging(builder =>
+                {
+                    builder
+                    .AddOtlpExporter(otlpOptions =>
+                    {
+                        otlpOptions.Endpoint = new Uri("http://localhost:4317");
+                    });
+                })
+                .WithTracing(builder =>
+                {
+                    builder
+                        .SetResourceBuilder(ResourceBuilder.CreateDefault().AddService("RobotAPI"))
+                        .AddAspNetCoreInstrumentation()
+                        .AddHttpClientInstrumentation()
+                        .AddEntityFrameworkCoreInstrumentation((opt) => opt.SetDbStatementForText = false)
+                        .AddOtlpExporter(otlpOptions =>
+                        {
+                            otlpOptions.Endpoint = new Uri("http://localhost:4317");
+                        });
+
+                });
 
             // Registra o Swagger para documentar a API
             services.AddSwaggerGen(c =>
             {
-                c.SwaggerDoc("v1", new Info
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
                     Title = "Robot API",
                     Description = "A simple example of interaction with the robot through the ASP.NET Core Web API.",
-                    TermsOfService = "None",
-                    Contact = new Contact
+                    TermsOfService = new Uri("https://example.com/termofservice"),
+                    Contact = new OpenApiContact
                     {
                         Name = "Hugo Estevam Longo",
                         Email = string.Empty,
-                        Url = "https://twitter.com/hugoestevam"
+                        Url = new Uri("https://twitter.com/hugoestevam")
                     },
-                    License = new License
+                    License = new OpenApiLicense
                     {
                         Name = "Use under LICX",
-                        Url = "https://example.com/license"
+                        Url = new Uri("https://example.com/license")
                     }
-
                 });
 
                 // Adiciona os comentários da API no Swagger JSON da UI.
@@ -60,19 +94,19 @@ namespace robot.WebApi
                 c.IncludeXmlComments(xmlPath);
             });
 
+
             // Registra os Repositorios que mantém a persistência do Robo
-            services.AddRepositories(container);
+            services.AddRepositories(Configuration, container);
 
             // Registra os Validators que executam as validações dos Inputs
             services.AddValidators(container);
 
             // Registra o Mediator que manipula as chamadas (no caso MediatR)
-            services.AddMediator(container);          
+            services.AddMediator(container);
 
-            services.BuildServiceProvider();
         }
 
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env)
+        public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
             if (env.IsDevelopment())
             {
@@ -89,13 +123,26 @@ namespace robot.WebApi
                 c.RoutePrefix = string.Empty;
             });
 
-            app.UseCors(builder => builder.WithOrigins("http://localhost:8000")
-                              .AllowAnyMethod()
-                              .AllowAnyHeader());
+            app.UseCors("AllowSpecificOrigin");
 
-            app.UseMvc();
+            // Add UseRouting before UseEndpoints
+            app.UseRouting();
 
-            container.RegisterMvcControllers(app);
+            // Integrate Simple Injector
+            app.UseSimpleInjector(container);
+
+            app.UseEndpoints(endpoints =>
+            {
+                endpoints.MapControllers();
+            });
+
+            container.RegisterInstance<IServiceProvider>(container);
+            
+            // Configurar injeção de propriedade
+            container.RegisterInitializer<ApiControllerBase>(controller =>
+            {
+                controller.Mapper = container.GetInstance<IMapper>();
+            });
 
             container.Verify();
         }

@@ -12,7 +12,7 @@ namespace robot.Application.Features.Robo.Commands
     {
         public string HeadMove { get; set; }
         [JsonIgnore]
-        public string RobotId { get; set; }
+        public long RobotId { get; set; }
        
     }
 
@@ -21,7 +21,7 @@ namespace robot.Application.Features.Robo.Commands
         public HeadAlignCommandValidator()
         {
             RuleFor(m => m.HeadMove).NotEmpty();
-            RuleFor(m => m.RobotId).NotEmpty();
+            RuleFor(m => m.RobotId).NotEqual(0);
         }
     }
 }

@@ -12,6 +12,7 @@ namespace robot.WebApi.Features.Robo
             CreateMap<RobotAgreggate, RobotViewModel>()
                 .ForMember(dest => dest.Id, opt => opt.MapFrom(src => src.RobotId))
                 .ForMember(dest => dest.Name, opt => opt.MapFrom(src => src.RobotName))
+                .ForMember(dest => dest.Status, opt => opt.MapFrom(src => (int)src.Status)) 
                 .ForMember(dest => dest.HeadAlign, opt => opt.MapFrom(src => (int)src.HeadAlign))
                 .ForMember(dest => dest.HeadDirection, opt => opt.MapFrom(src => src.HeadDirection))
                 .ForMember(dest => dest.LeftElbowPosition, opt => opt.MapFrom(src => src.LeftElbowPosition))

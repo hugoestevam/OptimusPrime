@@ -10,11 +10,15 @@ using System.Linq;
 using System.Net;
 using System.Threading.Tasks;
 using robot.Domain.Exceptions;
+using Microsoft.AspNetCore.Components;
 
 namespace robot.WebApi.Base
 {
     public class ApiControllerBase: Controller
     {
+        [Inject]
+        public IMapper Mapper { get; set; }
+
         /// <summary>
         /// Manuseia o callback. Valida se é necessário retornar erro ou o próprio TSuccess
         /// </summary> 
@@ -53,7 +57,7 @@ namespace robot.WebApi.Base
 
             var query = callback.Success;
 
-            var result = query.AsQueryable().ProjectTo<TResult>();
+            var result = query.AsQueryable().ProjectTo<TResult>(Mapper.ConfigurationProvider);
 
             return Ok(result);
         }
