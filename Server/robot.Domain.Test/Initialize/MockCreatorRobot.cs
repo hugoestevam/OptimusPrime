@@ -13,5 +13,10 @@ namespace robot.Domain.Test.Initialize
         {
             return new MockRobot();
         }
+
+        public override RobotAgreggate MountARobot(long id, string name, int status, int align, int direction, int leftElbow, int rightElbow, int leftWrist, int rightWrist)
+        {
+            throw new System.NotImplementedException();
+        }
     }
 }

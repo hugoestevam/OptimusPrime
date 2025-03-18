@@ -17,9 +17,9 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public Task<Result<Exception, Domain.Results.Unit>> Handle(RobotDeleteCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Exception, Domain.Results.Unit>> Handle(RobotDeleteCommand command, CancellationToken cancellationToken)
         {
-            return Task.FromResult(_repository.Delete(command.RobotId));
+            return await _repository.Delete(command.RobotId);
         }
     }
 }

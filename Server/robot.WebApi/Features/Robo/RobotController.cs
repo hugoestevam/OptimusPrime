@@ -58,7 +58,7 @@ namespace robot.WebApi.Features.Robo
         [ProducesResponseType(typeof(RobotViewModel), 200)]
         [ProducesResponseType(typeof(ExceptionPayload), 400)]
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get(string id)
+        public async Task<IActionResult> Get(long id)
         {
             var response = await _mediator.Send(new RobotQuery(id));
 
@@ -116,7 +116,7 @@ namespace robot.WebApi.Features.Robo
         [ProducesResponseType(typeof(int), 200)]
         [ProducesResponseType(typeof(ExceptionPayload), 400)]
         [HttpPut("{id}/HeadAlign")]
-        public async Task<IActionResult> PutHeadAlign(string id, [FromBody]HeadAlignCommand command)
+        public async Task<IActionResult> PutHeadAlign(long id, [FromBody]HeadAlignCommand command)
         {
             command.RobotId = id;
 
@@ -144,7 +144,7 @@ namespace robot.WebApi.Features.Robo
         [ProducesResponseType(typeof(int), 200)]
         [ProducesResponseType(typeof(ExceptionPayload), 400)]
         [HttpPut("{id}/HeadRotate")]
-        public async Task<IActionResult> PutHeadRotate(string id, [FromBody]HeadRotateCommand command)
+        public async Task<IActionResult> PutHeadRotate(long id, [FromBody]HeadRotateCommand command)
         {
             command.RobotId = id;
 
@@ -173,7 +173,7 @@ namespace robot.WebApi.Features.Robo
         [ProducesResponseType(typeof(int), 200)]
         [ProducesResponseType(typeof(ExceptionPayload), 400)]
         [HttpPut("{id}/Elbow")]
-        public async Task<IActionResult> PutElbow(string id, [FromBody]ElbowCommand command)
+        public async Task<IActionResult> PutElbow(long id, [FromBody]ElbowCommand command)
         {
             command.RobotId = id;
 
@@ -202,7 +202,7 @@ namespace robot.WebApi.Features.Robo
         [ProducesResponseType(typeof(int), 200)]
         [ProducesResponseType(typeof(ExceptionPayload), 400)]
         [HttpPut("{id}/Wrist")]
-        public async Task<IActionResult> PutRightElbow(string id, [FromBody]WristCommand command)
+        public async Task<IActionResult> PutRightElbow(long id, [FromBody]WristCommand command)
         {
             command.RobotId = id;
 
@@ -228,7 +228,7 @@ namespace robot.WebApi.Features.Robo
         [ProducesResponseType(typeof(Domain.Results.Unit), 200)]
         [ProducesResponseType(typeof(ExceptionPayload), 400)]
         [HttpDelete("{id}")]
-        public async Task<IActionResult> Delete(string id)
+        public async Task<IActionResult> Delete(long id)
         {
             var result = await _mediator.Send(new RobotDeleteCommand(id));
 

@@ -4,6 +4,7 @@ using robot.Domain.Results;
 using robot.Domain.Features.Robo;
 using robot.Domain.Test.Initialize;
 using Shouldly;
+using System.Threading.Tasks;
 
 namespace robot.Infra.Data.Test
 {
@@ -19,50 +20,49 @@ namespace robot.Infra.Data.Test
         }
 
         [Test]
-        public void RepositoryAddRobotTest()
+        public async Task RepositoryAddRobotTest()
         {
             //Arrange
             creator = new MockCreatorRobot();
             RobotAgreggate robot = creator.MakeARobot();
 
             //Action
-            var result = repository.Add(robot);
+            var result = await repository.Add(robot);
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.RobotId.ShouldNotBeNullOrEmpty();
+            result.Success.RobotId.ShouldNotBe(0);
         }
 
         [Test]
-        public void RepositoryGetAllRobotTest()
+        public async Task RepositoryGetAllRobotTest()
         {
             //Action
-            var result = repository.GetAll();
+            var result = await repository.GetAll();
 
             result.IsSuccess.ShouldBeTrue();
             result.Success.Count.ShouldBe(1);
         }
 
         [Test]
-        public void RepositoryGetByIdRobotTest()
+        public async Task RepositoryGetByIdRobotTest()
         {
             //Action
-            var result = repository.Get("099153c2625149bc8ecb3e85e03f0022");
+            var result = await repository.Get(0991532625149);
 
             result.IsSuccess.ShouldBeTrue();
-            result.Success.RobotId.ShouldBe("099153c2625149bc8ecb3e85e03f0022");
+            result.Success.RobotId.ShouldBe(0991532625149);
         }
 
         [Test]
-        public void RepositoryUpdateRobotTest()
+        public async Task RepositoryUpdateRobotTest()
         {
             //Arrange
-            RobotAgreggate robot = null;
-            robot = repository.Get("099153c2625149bc8ecb3e85e03f0022").Success;
+            var robot = await repository.Get(0991532625149);
 
             //Action
-            robot.MoveHeadForUp();
-            var result = repository.Update(robot);
+            robot.Success.MoveHeadForUp();
+            var result = await repository.Update(robot.Success);
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
@@ -70,14 +70,14 @@ namespace robot.Infra.Data.Test
         }
 
         [Test]
-        public void RepositoryDeleteRobotTest()
+        public async Task RepositoryDeleteRobotTest()
         {
             //Action
-            var result = repository.Delete("099153c2625149bc8ecb3e85e03f0022");
-            var resultGet = repository.Get("099153c2625149bc8ecb3e85e03f0022");
+            var result = await repository.Delete(0991532625149);
+            var resultGet = await repository.Get(0991532625149);
 
             //Assert
-            result.IsSuccess.ShouldBeTrue();            
+            result.IsSuccess.ShouldBeTrue();             
             resultGet.IsFailure.ShouldBeTrue();
             resultGet.Failure.ShouldBeOfType<NotFoundException>();
         }

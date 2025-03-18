@@ -12,7 +12,7 @@ namespace robot.Application.Features.Robo.Commands
         public string ElbowSide { get; set; }
         public string ElbowAction { get; set; }
         [JsonIgnore]
-        public string RobotId { get; set; }
+        public long RobotId { get; set; }
        
     }
 
@@ -22,7 +22,7 @@ namespace robot.Application.Features.Robo.Commands
         {
             RuleFor(m => m.ElbowSide).NotEmpty();
             RuleFor(m => m.ElbowAction).NotEmpty();
-            RuleFor(m => m.RobotId).NotEmpty();
+            RuleFor(m => m.RobotId).NotEqual(0);
         }
     }
 }

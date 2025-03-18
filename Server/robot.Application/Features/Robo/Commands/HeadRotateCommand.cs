@@ -11,7 +11,7 @@ namespace robot.Application.Features.Robo.Commands
     {
         public string HeadRotate { get; set; }
         [JsonIgnore]
-        public string RobotId { get; set; }
+        public long RobotId { get; set; }
     }
 
     public class HeadRotateCommandValidator : AbstractValidator<HeadRotateCommand>
@@ -19,7 +19,7 @@ namespace robot.Application.Features.Robo.Commands
         public HeadRotateCommandValidator()
         {
             RuleFor(m => m.HeadRotate).NotEmpty();
-            RuleFor(m => m.RobotId).NotEmpty();
+            RuleFor(m => m.RobotId).NotEqual(0);
         }
     }
 }

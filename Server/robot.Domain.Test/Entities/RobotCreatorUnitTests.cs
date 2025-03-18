@@ -2,9 +2,9 @@ using NUnit.Framework;
 using robot.Domain.Features.Robo;
 using Shouldly;
 
-namespace Tests
+namespace robot.Domain.Test
 {
-    public class RobotCreatorUnitTests
+    public class RobotCreatorTests
     {
         AbstractRobotFactory creator;
 

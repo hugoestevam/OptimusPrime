@@ -7,10 +7,10 @@ namespace robot.WebApi.Behaviours
 {
     public class MeasureTimePipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, TResponse>
     {
-        public async Task<TResponse> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<TResponse> next)
+        public Task<TResponse> Handle(TRequest request, RequestHandlerDelegate<TResponse> next, CancellationToken cancellationToken)
         {
             var stopWatch = Stopwatch.StartNew();
-            var result = await next();
+            var result = next();
             var elapsed = stopWatch.Elapsed;
             Debug.WriteLine($"Tempo de execução do request {typeof(TRequest).FullName}: {elapsed}ms");
             return result;

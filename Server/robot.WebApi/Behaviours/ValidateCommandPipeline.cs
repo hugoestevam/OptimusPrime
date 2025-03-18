@@ -21,7 +21,7 @@ namespace robot.WebApi.Behaviours
             _validators = validators;
         }
 
-        public async Task<Result<Exception, TResponse>> Handle(TRequest request, CancellationToken cancellationToken, RequestHandlerDelegate<Result<Exception, TResponse>> next)
+        public Task<Result<Exception, TResponse>> Handle(TRequest request, RequestHandlerDelegate<Result<Exception, TResponse>> next, CancellationToken cancellationToken)
         {
             var failures = _validators
                 .Select(v => v.Validate(request))
@@ -31,10 +31,11 @@ namespace robot.WebApi.Behaviours
 
             if (failures.Any())
             {
-                return new ValidationException(failures);
+                Result<Exception, TResponse> validationException = new ValidationException(failures);
+                return Task.FromResult(validationException);
             }
 
-            return await next();
+            return next();
         }
     }
 }
