@@ -11,8 +11,8 @@ namespace robot.WebApi.Behaviours
     /// <summary>
     /// Pipeline que valida todos os Commands, que implementam a interface IRequest do MediatR, antes de chamar a execução do handler.
     /// </summary>
-    public class ValidateCommandPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, Result<Exception, TResponse>>
-        where TRequest : IRequest<Result<Exception, TResponse>>
+    public class ValidateCommandPipeline<TRequest, TResponse> : IPipelineBehavior<TRequest, Result<TResponse>>
+        where TRequest : IRequest<Result<TResponse>>
     {
         private readonly IValidator<TRequest>[] _validators;
 
@@ -21,7 +21,7 @@ namespace robot.WebApi.Behaviours
             _validators = validators;
         }
 
-        public Task<Result<Exception, TResponse>> Handle(TRequest request, RequestHandlerDelegate<Result<Exception, TResponse>> next, CancellationToken cancellationToken)
+        public async Task<Result<TResponse>> Handle(TRequest request, RequestHandlerDelegate<Result<TResponse>> next, CancellationToken cancellationToken)
         {
             var failures = _validators
                 .Select(v => v.Validate(request))
@@ -31,11 +31,11 @@ namespace robot.WebApi.Behaviours
 
             if (failures.Any())
             {
-                Result<Exception, TResponse> validationException = new ValidationException(failures);
-                return Task.FromResult(validationException);
+                var validationException = new ValidationException(failures);
+                return Result<TResponse>.Fail(validationException);
             }
 
-            return next();
+            return await next();
         }
     }
 }

@@ -1,7 +1,6 @@
 ﻿using MediatR;
 using robot.Application.Features.Robo.Commands;
 using robot.Domain.Results;
-using System;
 using System.Threading;
 using System.Threading.Tasks;
 using robot.Domain.Exceptions;
@@ -9,7 +8,7 @@ using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Handlers
 {
-    public class MoveElbowHandler : IRequestHandler<ElbowCommand, Result<Exception, int>>
+    public class MoveElbowHandler : IRequestHandler<ElbowCommand, Result<int>>
     {
         private readonly IRobotRepository _repository;
 
@@ -18,19 +17,19 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public async Task<Result<Exception, int>> Handle(ElbowCommand command, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(ElbowCommand command, CancellationToken cancellationToken)
         {
             var findRobotCallback = await _repository.Get(command.RobotId);
 
             if (!findRobotCallback.IsSuccess)
-                return findRobotCallback.Failure;
+                return Result<int>.Fail(findRobotCallback.Error);
 
-            return await ProcessElbowAction(command, findRobotCallback.Success);
+            return await ProcessElbowAction(command, findRobotCallback.Value);
         }
 
-        private async Task<Result<Exception, int>> ProcessElbowAction(ElbowCommand command, RobotAgreggate robot)
+        private async Task<Result<int>> ProcessElbowAction(ElbowCommand command, RobotAgreggate robot)
         {
-            Result<Exception, int> actionCallback;
+            Result<int> actionCallback;
             switch (command.ElbowSide.ToLower())
             {
                 case "left":
@@ -40,16 +39,16 @@ namespace robot.Application.Features.Robo.Handlers
                     actionCallback = ExecuteActionInRightElbow(robot, command.ElbowAction);
                     break;
                 default:
-                    return new BussinessException(ErrorCodes.BadRequest, "ElbowSide possui comando inválido.");
+                    return Result<int>.Fail(new BussinessException(ErrorCodes.BadRequest, "ElbowSide possui comando inválido."));
             }
 
             if (actionCallback.IsSuccess)
-                return await PersistRobotState(robot, actionCallback.Success);
+                return await PersistRobotState(robot, actionCallback.Value);
 
-            return actionCallback.Failure;
+            return Result<int>.Fail(actionCallback.Error);
         }
 
-        private Result<Exception, int> ExecuteActionInLeftElbow(RobotAgreggate robot, string action)
+        private Result<int> ExecuteActionInLeftElbow(RobotAgreggate robot, string action)
         {
             switch (action.ToLower())
             {
@@ -58,11 +57,11 @@ namespace robot.Application.Features.Robo.Handlers
                 case "expand":
                     return robot.LeftElbowExpand();
                 default:
-                    return new BussinessException(ErrorCodes.BadRequest, "ElbowAction possui comando inválido.");
+                    return Result<int>.Fail(new BussinessException(ErrorCodes.BadRequest, "ElbowAction possui comando inválido."));
             }
         }
 
-        private Result<Exception, int> ExecuteActionInRightElbow(RobotAgreggate robot, string action)
+        private Result<int> ExecuteActionInRightElbow(RobotAgreggate robot, string action)
         {
             switch (action.ToLower())
             {
@@ -71,18 +70,18 @@ namespace robot.Application.Features.Robo.Handlers
                 case "expand":
                     return robot.RightElbowExpand();
                 default:
-                    return new BussinessException(ErrorCodes.BadRequest, "ElbowAction possui comando inválido.");
+                    return Result<int>.Fail(new BussinessException(ErrorCodes.BadRequest, "ElbowAction possui comando inválido."));
             }
         }
 
-        private async Task<Result<Exception, int>> PersistRobotState(RobotAgreggate robot, int state)
+        private async Task<Result<int>> PersistRobotState(RobotAgreggate robot, int state)
         {
             var updateCallback = await _repository.Update(robot);
 
             if (updateCallback.IsSuccess)
-                return state;
+                return Result<int>.Success(state);
 
-            return updateCallback.Failure;
+            return Result<int>.Fail(updateCallback.Error);
         }
     } 
 }

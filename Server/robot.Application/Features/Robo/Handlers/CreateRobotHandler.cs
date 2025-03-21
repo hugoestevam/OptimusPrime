@@ -8,7 +8,7 @@ using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Handlers
 {
-    public class CreateRobotHandler : IRequestHandler<RobotCreateCommand, Result<Exception, RobotAgreggate>>
+    public class CreateRobotHandler : IRequestHandler<RobotCreateCommand, Result<RobotAgreggate>>
     {
         private readonly IRobotRepository _repository;
 
@@ -17,7 +17,7 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public async Task<Result<Exception, RobotAgreggate>> Handle(RobotCreateCommand command, CancellationToken cancellationToken)
+        public async Task<Result<RobotAgreggate>> Handle(RobotCreateCommand command, CancellationToken cancellationToken)
         {
             AbstractRobotFactory creator = new ConcreteRobotFactory();
 

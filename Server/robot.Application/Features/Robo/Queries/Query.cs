@@ -6,7 +6,7 @@ using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Queries
 {
-    public class Query : IRequest<Result<Exception, List<RobotAgreggate>>>
+    public class Query : IRequest<Result<List<RobotAgreggate>>>
     {
     }
 }

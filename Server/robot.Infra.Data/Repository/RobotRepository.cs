@@ -8,87 +8,90 @@ using robot.Domain.Features.Robo;
 using robot.Domain;
 using OpenTelemetry.Trace;
 using System.Threading.Tasks;
+using Microsoft.Extensions.Caching.Memory;
 
 namespace robot.Infra.Data
 {
     /// <summary>
-    /// Está classe é um simples repositório para manter o estado
-    /// dos robos em memória
+    /// Esta classe é um simples repositório para manter o estado
+    /// dos robôs em memória
     /// </summary>
     public class RobotRepository : IRobotRepository
     {
-        private readonly ConcurrentDictionary<long, RobotAgreggate> _cache;
+        private readonly ConcurrentDictionary<long, RobotAgreggate> _robots;
         private readonly Tracer _tracer;
 
         public RobotRepository()
         {
-            _cache = new ConcurrentDictionary<long, RobotAgreggate>();
+            _robots = new ConcurrentDictionary<long, RobotAgreggate>();
             _tracer = DataTelemetry.Instance.GetTracer("RobotInfraData");
 
             RobotAgreggate robot = new ConcreteRobotFactory().MakeARobot();
             robot.RobotId = 0991532625149;
             robot.RobotName = "EuRobo";
             robot.Status = RobotStatus.Online;
-            _cache.GetOrAdd(robot.RobotId, robot);
+            _robots[robot.RobotId] = robot;
         }
 
-        public async Task<Result<Exception, RobotAgreggate>> Add(RobotAgreggate robot)
+        public async Task<Result<RobotAgreggate>> Add(RobotAgreggate robot)
         {
-            var robotId = (long)new Random(1).Next(int.MaxValue);
-
-            robot.RobotId = robotId;
-            _cache.TryAdd(robotId, robot);
-            return await Task.FromResult(robot);
-        }
-
-        public async Task<Result<Exception, Unit>> Delete(long robotId)
-        {
-            RobotAgreggate robot;
-            if (_cache.TryRemove(robotId, out robot))
-                return await Task.FromResult(Unit.Successful);
-
-            return await Task.FromResult(new InvalidOperationException($"Erro ao remover o robo: {robotId}"));
-        }
-
-        public async Task<Result<Exception, RobotAgreggate>> Get(long robotId)
-        {
-            RobotAgreggate robot = null;
-            if (_cache.TryGetValue(robotId, out robot))
+            return await Task.FromResult(Result<RobotAgreggate>.TryRun(() =>
             {
-                return await Task.FromResult(robot);
-            }
-            return await Task.FromResult(new NotFoundException());
+                var robotId = (long)new Random().Next(int.MaxValue);
+                robot.RobotId = robotId;
+                _robots[robotId] = robot;
+                return Result<RobotAgreggate>.Success(robot);
+            }));
         }
 
-        public async Task<Result<Exception, List<RobotAgreggate>>> GetAll()
+        public async Task<Result<Unit>> Delete(long robotId)
+        {
+            return await Task.FromResult(Result<Unit>.TryRun(() =>
+            {
+                if (_robots.TryRemove(robotId, out _))
+                {
+                    return Result<Unit>.Success(Unit.Successful);
+                }
+                return Result<Unit>.Fail(new InvalidOperationException($"Erro ao remover o robo: {robotId}"));
+            }));
+        }
+
+        public async Task<Result<RobotAgreggate>> Get(long robotId)
+        {
+            return await Task.FromResult(Result<RobotAgreggate>.TryRun(() =>
+            {
+                if (_robots.TryGetValue(robotId, out RobotAgreggate robot))
+                {
+                    return Result<RobotAgreggate>.Success(robot);
+                }
+                return Result<RobotAgreggate>.Fail(new NotFoundException());
+            }));
+        }
+
+        public async Task<Result<List<RobotAgreggate>>> GetAll()
         {
             using (var span = _tracer.StartActiveSpan("GetAllRobots"))
             {
-                try
+                return await Task.FromResult(Result<List<RobotAgreggate>>.TryRun(() =>
                 {
-                    var result = Result.Run(() => _cache.Values.ToList());
-                    span.SetAttribute("robot.count", result.Success?.Count ?? 0);
-                    return await Task.FromResult(result);
-                }
-                catch (Exception ex)
-                {
-                    span.SetStatus(Status.Error.WithDescription(ex.Message));
-                    return ex;
-                }
+                    var result = _robots.Values.ToList();
+                    span.SetAttribute("robot.count", result.Count);
+                    return Result<List<RobotAgreggate>>.Success(result);
+                }));
             }
         }
 
-        public async Task<Result<Exception, RobotAgreggate>> Update(RobotAgreggate robot)
+        public async Task<Result<RobotAgreggate>> Update(RobotAgreggate robot)
         {
-            RobotAgreggate actualRobot = null;
-            _cache.TryGetValue(robot.RobotId, out actualRobot);
-
-            if (_cache.TryUpdate(robot.RobotId, robot, actualRobot))
+            return await Task.FromResult(Result<RobotAgreggate>.TryRun(() =>
             {
-                return await Task.FromResult(robot);
-            }
-
-            return await Task.FromResult(new InvalidOperationException($"Erro ao atualizar o robo: {robot.RobotId}"));
+                if (_robots.ContainsKey(robot.RobotId))
+                {
+                    _robots[robot.RobotId] = robot;
+                    return Result<RobotAgreggate>.Success(robot);
+                }
+                return Result<RobotAgreggate>.Fail(new NotFoundException());
+            }));
         }
     }
 }

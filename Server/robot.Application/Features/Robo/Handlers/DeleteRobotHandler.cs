@@ -5,10 +5,11 @@ using System;
 using System.Threading;
 using System.Threading.Tasks;
 using robot.Domain.Features.Robo;
+using Unit = robot.Domain.Results.Unit;
 
 namespace robot.Application.Features.Robo.Handlers
 {
-    public class DeleteRobotHandler : IRequestHandler<RobotDeleteCommand, Result<Exception, Domain.Results.Unit>>
+    public class DeleteRobotHandler : IRequestHandler<RobotDeleteCommand, Result<Unit>>
     {
         private readonly IRobotRepository _repository;
 
@@ -17,7 +18,7 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public async Task<Result<Exception, Domain.Results.Unit>> Handle(RobotDeleteCommand command, CancellationToken cancellationToken)
+        public async Task<Result<Unit>> Handle(RobotDeleteCommand command, CancellationToken cancellationToken)
         {
             return await _repository.Delete(command.RobotId);
         }

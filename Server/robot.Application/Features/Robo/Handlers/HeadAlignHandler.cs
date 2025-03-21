@@ -9,7 +9,7 @@ using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Handlers
 {
-    public class HeadAlignHandler : IRequestHandler<HeadAlignCommand, Result<Exception, int>>
+    public class HeadAlignHandler : IRequestHandler<HeadAlignCommand, Result<int>>
     {
         private readonly IRobotRepository _repository;
 
@@ -18,19 +18,19 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public async Task<Result<Exception, int>> Handle(HeadAlignCommand command, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(HeadAlignCommand command, CancellationToken cancellationToken)
         {
             var findRobotCallback = await _repository.Get(command.RobotId);
 
             if (!findRobotCallback.IsSuccess)
-                return findRobotCallback.Failure;
+                return Result<int>.Fail(findRobotCallback.Error);
 
-            return await ProcessHeadAlign(command, findRobotCallback.Success);
+            return await ProcessHeadAlign(command, findRobotCallback.Value);
         }
 
-        private async Task<Result<Exception, int>> ProcessHeadAlign(HeadAlignCommand command, RobotAgreggate robot)
+        private async Task<Result<int>> ProcessHeadAlign(HeadAlignCommand command, RobotAgreggate robot)
         {
-            Result<Exception, Align> moveCallback;
+            Result<Align> moveCallback;
 
             switch (command.HeadMove.ToLower())
             {
@@ -41,23 +41,23 @@ namespace robot.Application.Features.Robo.Handlers
                     moveCallback = robot.MoveHeadToBelow();
                     break;
                 default:
-                    return new BussinessException(ErrorCodes.BadRequest, "Comando inválido.");
+                    return Result<int>.Fail(new BussinessException(ErrorCodes.BadRequest, "Comando inválido."));
             }
            
             if (moveCallback.IsSuccess)
-                return await PersistRobotState(robot, (int)moveCallback.Success);
+                return await PersistRobotState(robot, (int)moveCallback.Value);
 
-            return moveCallback.Failure;
+            return Result<int>.Fail(moveCallback.Error);
         }
 
-        private async Task<Result<Exception, int>> PersistRobotState(RobotAgreggate robot, int state)
+        private async Task<Result<int>> PersistRobotState(RobotAgreggate robot, int state)
         {
             var updateCallback = await _repository.Update(robot);
 
             if (updateCallback.IsSuccess)
-                return state;
+                return Result<int>.Success(state);
 
-            return updateCallback.Failure;
+            return Result<int>.Fail(updateCallback.Error);
         }
     }
 }

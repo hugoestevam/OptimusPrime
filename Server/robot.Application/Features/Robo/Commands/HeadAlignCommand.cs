@@ -1,5 +1,4 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
 using Newtonsoft.Json;
 using robot.Domain;
@@ -8,7 +7,7 @@ using System;
 
 namespace robot.Application.Features.Robo.Commands
 {
-    public class HeadAlignCommand : IRequest<Result<Exception, int>>
+    public class HeadAlignCommand : IRequest<Result<int>>
     {
         public string HeadMove { get; set; }
         [JsonIgnore]

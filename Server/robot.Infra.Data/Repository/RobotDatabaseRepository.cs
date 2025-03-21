@@ -25,51 +25,41 @@ namespace robot.Infra.Data
             _tracer = DataTelemetry.Instance.GetTracer("RobotInfraData");
         }
 
-        public async Task<Result<Exception, RobotAgreggate>> Add(RobotAgreggate robot)
+        public async Task<Result<RobotAgreggate>> Add(RobotAgreggate robot)
         {
-            try
+            return await Result<RobotAgreggate>.TryRunAsync(async () =>
             {
                 var robotDao = _mapper.Map<RobotDao>(robot);
                 var newRobot = await _context.Robots.AddAsync(robotDao);
                 await _context.SaveChangesAsync();
                 robot.RobotId = newRobot.Entity.RobotId;
                 return robot;
-            }
-            catch (Exception ex)
-            {
-                return ex;
-            }
+            });
         }
 
-        public async Task<Result<Exception, Unit>> Delete(long robotId)
+        public async Task<Result<Unit>> Delete(long robotId)
         {
-            try
+            return await Result<Unit>.TryRunAsync(async () =>
             {
                 var robot = await _context.Robots.FindAsync(robotId);
                 if (robot == null)
                 {
-                    return Result<Exception, Unit>.Of(new NotFoundException());
+                    return Result<Unit>.Fail(new NotFoundException());
                 }
 
                 _context.Robots.Remove(robot);
                 await _context.SaveChangesAsync();
                 return Unit.Successful;
-            }
-            catch (Exception ex)
-            {
-                return ex;
-            }
+            });
         }
 
-        public async Task<Result<Exception, RobotAgreggate>> Get(long robotId)
+        public async Task<Result<RobotAgreggate>> Get(long robotId)
         {
-            try
+            return await Result<RobotAgreggate>.TryRunAsync(async () =>
             {
                 var robot = await _context.Robots.FindAsync(robotId);
                 if (robot == null)
-                {
-                    return Result<Exception, RobotAgreggate>.Of(new NotFoundException());
-                }
+                    return Result<RobotAgreggate>.Fail(new NotFoundException());
 
                 var factory = new ConcreteRobotFactory();
                 return factory.MountARobot(
@@ -83,18 +73,14 @@ namespace robot.Infra.Data
                     robot.RightElbowPosition,
                     robot.RightWristDirection
                 );
-            }
-            catch (Exception ex)
-            {
-                return ex;
-            }
+            });
         }
 
-        public async Task<Result<Exception, List<RobotAgreggate>>> GetAll()
+        public async Task<Result<List<RobotAgreggate>>> GetAll()
         {
             using (var span = _tracer.StartActiveSpan("GetAllRobots"))
             {
-                try
+                return await Result<List<RobotAgreggate>>.TryRunAsync(async () =>
                 {
                     var robots = await _context.Robots.ToListAsync();
                     var factory = new ConcreteRobotFactory();
@@ -111,33 +97,24 @@ namespace robot.Infra.Data
                     )).ToList();
                     span.SetAttribute("robot.count", robotAggregates.Count);
                     return robotAggregates;
-                }
-                catch (Exception ex)
-                {
-                    span.SetStatus(Status.Error.WithDescription(ex.Message));
-                    return ex;
-                }
+                });
             }
         }
 
-        public async Task<Result<Exception, RobotAgreggate>> Update(RobotAgreggate robot)
+        public async Task<Result<RobotAgreggate>> Update(RobotAgreggate robot)
         {
-            try
+            return await Result<RobotAgreggate>.TryRunAsync(async () =>
             {
                 var existingRobot = await _context.Robots.FindAsync(robot.RobotId);
                 if (existingRobot == null)
                 {
-                    return Result<Exception, RobotAgreggate>.Of(new NotFoundException());
+                    return Result<RobotAgreggate>.Fail( new NotFoundException());
                 }
 
                 _context.Entry(existingRobot).CurrentValues.SetValues(robot);
                 await _context.SaveChangesAsync();
                 return robot;
-            }
-            catch (Exception ex)
-            {
-                return ex;
-            }
+            });
         }
     }
 }

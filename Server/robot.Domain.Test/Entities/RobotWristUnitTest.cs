@@ -31,7 +31,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(45);
+            result.Value.ShouldBe(45);
             robot.LeftWristDirection.ShouldBe(45);
         }
 
@@ -49,7 +49,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(-45);
+            result.Value.ShouldBe(-45);
             robot.LeftWristDirection.ShouldBe(-45);
         }
 
@@ -67,7 +67,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(45);
+            result.Value.ShouldBe(45);
             robot.RightWristDirection.ShouldBe(45);
         }
 
@@ -85,7 +85,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(-45);
+            result.Value.ShouldBe(-45);
             robot.RightWristDirection.ShouldBe(-45);
         }
 
@@ -103,8 +103,8 @@ namespace robot.Domain.Test.Entities
             var result = robot.LeftWristRotateToTheLeft();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<LimitedWristRotateException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<LimitedWristRotateException>();
             robot.LeftWristDirection.ShouldBe(180);
         }
 
@@ -122,8 +122,8 @@ namespace robot.Domain.Test.Entities
             var result = robot.LeftWristRotateToTheRight();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<LimitedWristRotateException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<LimitedWristRotateException>();
             robot.LeftWristDirection.ShouldBe(-90);
         }
 
@@ -138,8 +138,8 @@ namespace robot.Domain.Test.Entities
             var result = robot.LeftWristRotateToTheLeft();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<DeniedWristRotateException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<DeniedWristRotateException>();
             robot.LeftWristDirection.ShouldBe(0);
         }
 
@@ -154,8 +154,8 @@ namespace robot.Domain.Test.Entities
             var result = robot.LeftWristRotateToTheRight();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<DeniedWristRotateException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<DeniedWristRotateException>();
             robot.LeftWristDirection.ShouldBe(0);
         }
 
@@ -170,8 +170,8 @@ namespace robot.Domain.Test.Entities
             var result = robot.RightWristRotateToTheRight();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<DeniedWristRotateException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<DeniedWristRotateException>();
             robot.RightWristDirection.ShouldBe(0);
         }
 
@@ -186,8 +186,8 @@ namespace robot.Domain.Test.Entities
             var result = robot.RightWristRotateToTheLeft();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<DeniedWristRotateException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<DeniedWristRotateException>();
             robot.RightWristDirection.ShouldBe(0);
         }
     }

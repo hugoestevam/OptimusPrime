@@ -31,7 +31,7 @@ namespace robot.Infra.Data.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.RobotId.ShouldNotBe(0);
+            result.Value.RobotId.ShouldNotBe(0);
         }
 
         [Test]
@@ -41,7 +41,7 @@ namespace robot.Infra.Data.Test
             var result = await repository.GetAll();
 
             result.IsSuccess.ShouldBeTrue();
-            result.Success.Count.ShouldBe(1);
+            result.Value.Count.ShouldBe(1);
         }
 
         [Test]
@@ -51,7 +51,7 @@ namespace robot.Infra.Data.Test
             var result = await repository.Get(0991532625149);
 
             result.IsSuccess.ShouldBeTrue();
-            result.Success.RobotId.ShouldBe(0991532625149);
+            result.Value.RobotId.ShouldBe(0991532625149);
         }
 
         [Test]
@@ -61,12 +61,12 @@ namespace robot.Infra.Data.Test
             var robot = await repository.Get(0991532625149);
 
             //Action
-            robot.Success.MoveHeadForUp();
-            var result = await repository.Update(robot.Success);
+            robot.Value.MoveHeadForUp();
+            var result = await repository.Update(robot.Value);
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.HeadAlign.ShouldBe(Align.Top);
+            result.Value.HeadAlign.ShouldBe(Align.Top);
         }
 
         [Test]
@@ -78,8 +78,8 @@ namespace robot.Infra.Data.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();             
-            resultGet.IsFailure.ShouldBeTrue();
-            resultGet.Failure.ShouldBeOfType<NotFoundException>();
+            resultGet.IsSuccess.ShouldBeFalse();
+            resultGet.Error.ShouldBeOfType<NotFoundException>();
         }
     }
 }

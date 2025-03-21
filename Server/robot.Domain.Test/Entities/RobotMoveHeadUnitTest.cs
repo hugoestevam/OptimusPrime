@@ -29,7 +29,7 @@ namespace robot.Domain.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(Align.Top);
+            result.Value.ShouldBe(Align.Top);
             robot.HeadAlign.ShouldBe(Align.Top);
         }
 
@@ -46,7 +46,7 @@ namespace robot.Domain.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(Align.Normal);
+            result.Value.ShouldBe(Align.Normal);
             robot.HeadAlign.ShouldBe(Align.Normal);
         }
 
@@ -62,8 +62,8 @@ namespace robot.Domain.Test
             var result = robot.MoveHeadForUp();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<LimitedHeadMoveException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<LimitedHeadMoveException>();
             robot.HeadAlign.ShouldBe(Align.Top);
         }
 
@@ -78,7 +78,7 @@ namespace robot.Domain.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(Align.Botton);
+            result.Value.ShouldBe(Align.Botton);
             robot.HeadAlign.ShouldBe(Align.Botton);
         }
 
@@ -95,7 +95,7 @@ namespace robot.Domain.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(Align.Normal);
+            result.Value.ShouldBe(Align.Normal);
             robot.HeadAlign.ShouldBe(Align.Normal);
         }
 
@@ -111,8 +111,8 @@ namespace robot.Domain.Test
             var result = robot.MoveHeadToBelow();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<LimitedHeadMoveException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<LimitedHeadMoveException>();
             robot.HeadAlign.ShouldBe(Align.Botton);
         }
     }

@@ -28,7 +28,7 @@ namespace robot.Domain.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(45);
+            result.Value.ShouldBe(45);
             robot.HeadDirection.ShouldBe(45);
         }
 
@@ -43,7 +43,7 @@ namespace robot.Domain.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(-45);
+            result.Value.ShouldBe(-45);
             robot.HeadDirection.ShouldBe(-45);
         }
 
@@ -60,8 +60,8 @@ namespace robot.Domain.Test
             var result = robot.RotateHeadToTheRight();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<DeniedHeadRotateException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<DeniedHeadRotateException>();
             robot.HeadDirection.ShouldBe(0);
             robot.RaisedEvents().ShouldHaveSingleItem();
         }
@@ -79,8 +79,8 @@ namespace robot.Domain.Test
             var result = robot.RotateHeadToTheLeft();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<DeniedHeadRotateException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<DeniedHeadRotateException>();
             robot.HeadDirection.ShouldBe(0);
             robot.RaisedEvents().ShouldHaveSingleItem();
         }
@@ -98,8 +98,8 @@ namespace robot.Domain.Test
             var result = robot.RotateHeadToTheLeft();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<LimitedHeadRotateException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<LimitedHeadRotateException>();
             robot.HeadDirection.ShouldBe(90);
         }
 
@@ -116,8 +116,8 @@ namespace robot.Domain.Test
             var result = robot.RotateHeadToTheRight();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<LimitedHeadRotateException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<LimitedHeadRotateException>();
             robot.HeadDirection.ShouldBe(-90);
         }
 
@@ -133,7 +133,7 @@ namespace robot.Domain.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(90);
+            result.Value.ShouldBe(90);
             robot.HeadDirection.ShouldBe(90);
         }
 
@@ -149,7 +149,7 @@ namespace robot.Domain.Test
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(-90);
+            result.Value.ShouldBe(-90);
             robot.HeadDirection.ShouldBe(-90);
         }
     }

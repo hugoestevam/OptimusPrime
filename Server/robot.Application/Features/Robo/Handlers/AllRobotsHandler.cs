@@ -10,7 +10,7 @@ using OpenTelemetry.Trace;
 
 namespace robot.Application.Features.Robo.Handlers
 {
-    public class Handler : IRequestHandler<Query, Result<Exception, List<RobotAgreggate>>>
+    public class Handler : IRequestHandler<Query, Result<List<RobotAgreggate>>>
     {
         private readonly IRobotRepository _repository;
         private readonly Tracer _tracer;
@@ -21,20 +21,20 @@ namespace robot.Application.Features.Robo.Handlers
             _tracer = ApplicationTelemetry.Instance.GetTracer("RobotHandler");
         }
 
-        public async Task<Result<Exception, List<RobotAgreggate>>> Handle(Query request, CancellationToken cancellationToken)
+        public async Task<Result<List<RobotAgreggate>>> Handle(Query request, CancellationToken cancellationToken)
         {
             using (var span = _tracer.StartActiveSpan("HandleAllRobotsQuery"))
             {
                 try
                 {
                     var result = await _repository.GetAll();
-                    span.SetAttribute("robot.count", result.Success?.Count ?? 0);
+                    span.SetAttribute("robot.count", result.Value?.Count ?? 0);
                     return result;
                 }
                 catch (Exception ex)
                 {
                     span.SetStatus(Status.Error.WithDescription(ex.Message));
-                    return ex;
+                    return Result<List<RobotAgreggate>>.Fail(ex);
                 }
             }
         }
