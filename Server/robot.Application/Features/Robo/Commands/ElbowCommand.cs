@@ -7,7 +7,7 @@ using System;
 
 namespace robot.Application.Features.Robo.Commands
 {
-    public class ElbowCommand : IRequest<Result<Exception, int>>
+    public class ElbowCommand : IRequest<Result<int>>
     {
         public string ElbowSide { get; set; }
         public string ElbowAction { get; set; }

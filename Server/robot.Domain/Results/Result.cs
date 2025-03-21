@@ -1,69 +1,89 @@
 ﻿using System;
+using System.Diagnostics.CodeAnalysis;
+using System.Threading.Tasks;
 
 namespace robot.Domain.Results
 {
-    using static Helpers;
-
-    /// <summary>
-    /// Essa classe tem o objetivo de fornecer um retorno mais expressivo dos resultados de uma função
-    /// Ao realizar uma chamada para um Object podemos ter como resultado: Exception, null ou Object
-    /// Ex: Try<Exception, Robot> t; 
-    /// Se IsFailure é True, temos uma instancia de uma Exception
-    /// Se IsSuccess é True, temos uma instancia de um Robot
-    /// Ex 2: Try<Exception, Unit> Para Success é necessário fazer o retorno de Result.Successful
-    /// </summary>
-    /// <typeparam name="TFailure"></typeparam>
-    /// <typeparam name="TSuccess"></typeparam>
-    public struct Result<TFailure, TSuccess>
+    public struct Result<T>
     {
-        public TFailure Failure { get; internal set; }
-        public TSuccess Success { get; internal set; }
-
-        public bool IsFailure { get; }
-        public bool IsSuccess => !IsFailure;
-
-        public Option<TFailure> OptionalFailure => IsFailure ? Some(Failure) : None;
-
-        public Option<TSuccess> OptionalSuccess => IsSuccess ? Some(Success) : None;
-
-        internal Result(TFailure failure)
+        // Success constructor
+        private Result(T value)
         {
-            IsFailure = true;
-            Failure = failure;
-            Success = default(TSuccess);
+            IsSuccess = true;
+            Value = value;
+            Error = null;
         }
 
-        internal Result(TSuccess success)
+        // Failure constructor
+        private Result(Exception error)
         {
-            IsFailure = false;
-            Failure = default(TFailure);
-            Success = success;
+            IsSuccess = false;
+            Value = default;
+            Error = error;
         }
 
-        public TResult Match<TResult>(
-                Func<TFailure, TResult> failure,
-                Func<TSuccess, TResult> success
-            )
-            => IsFailure ? failure(Failure) : success(Success);
+        [MemberNotNullWhen(true, nameof(Value))]
+        [MemberNotNullWhen(false, nameof(Error))]
+        public bool IsSuccess { get; }
+        public T? Value { get; }
+        public Exception? Error { get; }
 
-        public Unit Match(
-                Action<TFailure> failure,
-                Action<TSuccess> success
-            )
-            => Match(ToFunc(failure), ToFunc(success));
-
-        public static implicit operator Result<TFailure, TSuccess>(TFailure failure) => new Result<TFailure, TSuccess>(failure);
-
-        public static implicit operator Result<TFailure, TSuccess>(TSuccess success) => new Result<TFailure, TSuccess>(success);
-
-        public static Result<TFailure, TSuccess> Of(TSuccess obj) => obj;
-
-        public static Result<TFailure, TSuccess> Of(TFailure obj) => obj;
-
-        public object Select(Func<object, object> p)
+        // This Method takes two Func<T>, one for the success case and one for the error case
+        public Result<TReturn> Match<TReturn>(
+            Func<T, TReturn> onSuccess,
+            Func<Exception, Exception> onFailure)
         {
-            throw new NotImplementedException();
+            if (IsSuccess)
+            {
+                // If this result has a value, run the success method,
+                // which returns a different value, and then we create a
+                // Result<TReturn> from it (implicitly)
+                var result = onSuccess(Value);
+                return result;
+            }
+            else
+            {
+                {
+                    // If this result is an error, run the error method
+                    // to allow the user to manipulate/inspect the error.
+                    // We then create a new Result<TReturn> result object
+                    // from the error it returns
+                    var err = onFailure(Error);
+                    return Result<TReturn>.Fail(err);
+                }
+            }
+
         }
+
+        // Helper methods for constructing the `Result<T>`
+        public static Result<T> Success(T value) => new(value);
+        public static Result<T> Fail(Exception error) => new(error);
+        public static Result<T> TryRun(Func<Result<T>> func)
+        {
+            try
+            {
+                return func();
+            }
+            catch (Exception e)
+            {
+                return Fail(e);
+            }
+        }
+        public static async Task<Result<T>> TryRunAsync(Func<Task<Result<T>>> func)
+        {
+            try
+            {
+                return await func();
+            }
+            catch (Exception e)
+            {
+                return Fail(e);
+            }
+        }
+
+        // Allow converting a T directly into Result<T>
+        public static implicit operator Result<T>(T value) => Success(value);
+
     }
 
     /// <summary>

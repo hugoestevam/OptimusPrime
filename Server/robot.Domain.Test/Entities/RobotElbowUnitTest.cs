@@ -28,7 +28,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(135);
+            result.Value.ShouldBe(135);
             robot.LeftElbowPosition.ShouldBe(135);
         }
 
@@ -43,7 +43,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(135);
+            result.Value.ShouldBe(135);
             robot.RightElbowPosition.ShouldBe(135);
         }
 
@@ -61,7 +61,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(90);
+            result.Value.ShouldBe(90);
             robot.LeftElbowPosition.ShouldBe(90);
         }
 
@@ -79,7 +79,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(90);
+            result.Value.ShouldBe(90);
             robot.RightElbowPosition.ShouldBe(90);
         }
 
@@ -96,8 +96,8 @@ namespace robot.Domain.Test.Entities
             var result = robot.LeftElbowCollapse();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<LimitedElbowCollapseException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<LimitedElbowCollapseException>();
             robot.LeftElbowPosition.ShouldBe(45);
         }
 
@@ -114,8 +114,8 @@ namespace robot.Domain.Test.Entities
             var result = robot.RightElbowCollapse();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<LimitedElbowCollapseException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<LimitedElbowCollapseException>();
             robot.RightElbowPosition.ShouldBe(45);
         }
 
@@ -129,8 +129,8 @@ namespace robot.Domain.Test.Entities
             var result = robot.LeftElbowExpand();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<LimitedElbowExpandException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<LimitedElbowExpandException>();
             robot.LeftElbowPosition.ShouldBe(180);
         }
 
@@ -144,8 +144,8 @@ namespace robot.Domain.Test.Entities
             var result = robot.RightElbowExpand();
 
             //Assert
-            result.IsFailure.ShouldBeTrue();
-            result.Failure.ShouldBeOfType<LimitedElbowExpandException>();
+            result.IsSuccess.ShouldBeFalse();
+            result.Error.ShouldBeOfType<LimitedElbowExpandException>();
             robot.RightElbowPosition.ShouldBe(180);
         }
 
@@ -161,7 +161,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(90);
+            result.Value.ShouldBe(90);
             robot.LeftElbowPosition.ShouldBe(90);
         }
 
@@ -180,7 +180,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(135);
+            result.Value.ShouldBe(135);
             robot.LeftElbowPosition.ShouldBe(135);
         }
 
@@ -199,7 +199,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(90);
+            result.Value.ShouldBe(90);
             robot.LeftElbowPosition.ShouldBe(90);
             robot.LeftWristDirection.ShouldBe(0);
         }
@@ -219,7 +219,7 @@ namespace robot.Domain.Test.Entities
 
             //Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.ShouldBe(90);
+            result.Value.ShouldBe(90);
             robot.RightElbowPosition.ShouldBe(90);
             robot.RightWristDirection.ShouldBe(0);
         }

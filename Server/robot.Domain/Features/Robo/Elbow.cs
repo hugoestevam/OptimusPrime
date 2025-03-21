@@ -28,10 +28,10 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por contrair o cotovelo
         /// </summary>
-        public Result<Exception, int> Collapse()
+        public Result<int> Collapse()
         {
             if (Position == LimitElbowCollapse)
-                return new LimitedElbowCollapseException();
+                return Result<int>.Fail(new LimitedElbowCollapseException());
 
             Position = Position - AngleRotate;
             return Position;
@@ -40,10 +40,10 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por estender o cotovelo
         /// </summary>
-        public Result<Exception, int> Expand()
+        public Result<int> Expand()
         {
             if (Position == LimitElbowExpand)
-                return new LimitedElbowExpandException();
+                return Result<int>.Fail(new LimitedElbowExpandException());
 
             Position = Position + AngleRotate;
             return Position;

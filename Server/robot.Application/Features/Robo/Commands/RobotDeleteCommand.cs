@@ -1,13 +1,11 @@
 ﻿using FluentValidation;
-using FluentValidation.Results;
 using MediatR;
-using robot.Domain;
 using robot.Domain.Results;
-using System;
+using Unit = robot.Domain.Results.Unit;
 
 namespace robot.Application.Features.Robo.Commands
 {
-    public class RobotDeleteCommand : IRequest<Result<Exception, Domain.Results.Unit>>
+    public class RobotDeleteCommand : IRequest<Result<Unit>>
     {
         public long RobotId { get; set; }
 

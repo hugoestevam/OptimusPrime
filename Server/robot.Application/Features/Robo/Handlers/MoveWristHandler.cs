@@ -9,7 +9,7 @@ using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Handlers
 {
-    public class MoveWristHandler : IRequestHandler<WristCommand, Result<Exception, int>>
+    public class MoveWristHandler : IRequestHandler<WristCommand, Result<int>>
     {
         private readonly IRobotRepository _repository;
 
@@ -18,19 +18,19 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public async Task<Result<Exception, int>> Handle(WristCommand command, CancellationToken cancellationToken)
+        public async Task<Result<int>> Handle(WristCommand command, CancellationToken cancellationToken)
         {
             var findRobotCallback = await _repository.Get(command.RobotId);
 
             if (!findRobotCallback.IsSuccess)
-                return findRobotCallback.Failure;
+                return Result<int>.Fail(findRobotCallback.Error);
 
-            return await ProcessWristAction(command, findRobotCallback.Success);
+            return await ProcessWristAction(command, findRobotCallback.Value);
         }
 
-        private async Task<Result<Exception, int>> ProcessWristAction(WristCommand command, RobotAgreggate robot)
+        private async Task<Result<int>> ProcessWristAction(WristCommand command, RobotAgreggate robot)
         {
-            Result<Exception, int> actionCallback;
+            Result<int> actionCallback;
             switch (command.WristSide.ToLower())
             {
                 case "left":
@@ -40,16 +40,16 @@ namespace robot.Application.Features.Robo.Handlers
                     actionCallback = ExecuteActionInRightWrist(robot, command.WristRotate);
                     break;
                 default:
-                    return new BussinessException(ErrorCodes.BadRequest, "WristSide possui comando inválido.");
+                    return Result<int>.Fail(new BussinessException(ErrorCodes.BadRequest, "WristSide possui comando inválido."));
             }
 
             if (actionCallback.IsSuccess)
-                return await PersistRobotState(robot, actionCallback.Success);
+                return await PersistRobotState(robot, actionCallback.Value);
 
-            return actionCallback.Failure;
+            return Result<int>.Fail(actionCallback.Error);
         }
 
-        private Result<Exception, int> ExecuteActionInLeftWrist(RobotAgreggate robot, string action)
+        private Result<int> ExecuteActionInLeftWrist(RobotAgreggate robot, string action)
         {
             switch (action.ToLower())
             {
@@ -58,11 +58,11 @@ namespace robot.Application.Features.Robo.Handlers
                 case "right":
                     return robot.LeftWristRotateToTheRight();
                 default:
-                    return new BussinessException(ErrorCodes.BadRequest, "WristRotate possui comando inválido.");
+                    return Result<int>.Fail(new BussinessException(ErrorCodes.BadRequest, "WristRotate possui comando inválido."));
             }
         }
 
-        private Result<Exception, int> ExecuteActionInRightWrist(RobotAgreggate robot, string action)
+        private Result<int> ExecuteActionInRightWrist(RobotAgreggate robot, string action)
         {
             switch (action.ToLower())
             {
@@ -71,18 +71,18 @@ namespace robot.Application.Features.Robo.Handlers
                 case "right":
                     return robot.RightWristRotateToTheRight();
                 default:
-                    return new BussinessException(ErrorCodes.BadRequest, "WristRotate possui comando inválido.");
+                    return Result<int>.Fail(new BussinessException(ErrorCodes.BadRequest, "WristRotate possui comando inválido."));
             }
         }
 
-        private async Task<Result<Exception, int>> PersistRobotState(RobotAgreggate robot, int state)
+        private async Task<Result<int>> PersistRobotState(RobotAgreggate robot, int state)
         {
             var updateCallback = await _repository.Update(robot);
 
             if (updateCallback.IsSuccess)
-                return state;
+                return Result<int>.Success(state);
 
-            return updateCallback.Failure;
+            return Result<int>.Fail(updateCallback.Error);
         }
     }
 }

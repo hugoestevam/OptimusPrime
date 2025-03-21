@@ -8,7 +8,7 @@ using robot.Domain.Features.Robo;
 
 namespace robot.Application.Features.Robo.Handlers
 {
-    public class FindRobotHandler : IRequestHandler<RobotQuery, Result<Exception, RobotAgreggate>>
+    public class FindRobotHandler : IRequestHandler<RobotQuery, Result<RobotAgreggate>>
     {
         private readonly IRobotRepository _repository;
 
@@ -17,7 +17,7 @@ namespace robot.Application.Features.Robo.Handlers
             _repository = repository;
         }
 
-        public Task<Result<Exception, RobotAgreggate>> Handle(RobotQuery query, CancellationToken cancellationToken)
+        public Task<Result<RobotAgreggate>> Handle(RobotQuery query, CancellationToken cancellationToken)
         {
             return _repository.Get(query.RobotId);
         }

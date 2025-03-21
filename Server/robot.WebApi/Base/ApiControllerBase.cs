@@ -22,13 +22,12 @@ namespace robot.WebApi.Base
         /// <summary>
         /// Manuseia o callback. Valida se é necessário retornar erro ou o próprio TSuccess
         /// </summary> 
-        /// <typeparam name="TFailure"></typeparam>
         /// <typeparam name="TSuccess"></typeparam>
-        /// <param name="callback">Objeto Try utilizado nas chamadas.</param>
+        /// <param name="callback">Objeto Result utilizado nas chamadas.</param>
         /// <returns></returns>
-        public IActionResult HandleCommand<TFailure, TSuccess>(Result<TFailure, TSuccess> callback) where TFailure : Exception
+        public IActionResult HandleCommand<TSuccess>(Result<TSuccess> callback)
         {
-            return callback.IsFailure ? HandleFailure(callback.Failure) : Ok(callback.Success);
+            return callback.IsSuccess ? Ok(callback.Value) : HandleFailure(callback.Error);
         }
 
         /// <summary>
@@ -36,11 +35,11 @@ namespace robot.WebApi.Base
         /// </summary> 
         /// <typeparam name="TSource">Tipo de Origem</typeparam>
         /// <typeparam name="TResult">Tipo de Destino (ViewModel)</typeparam>
-        /// <param name="callback">Objeto Try utilizado nas chamadas.</param>
+        /// <param name="callback">Objeto Result utilizado nas chamadas.</param>
         /// <returns></returns>
-        public IActionResult HandleQuery<TSource, TResult>(Result<Exception, TSource> callback)
+        public IActionResult HandleQuery<TSource, TResult>(Result<TSource> callback)
         {
-            return callback.IsFailure ? HandleFailure(callback.Failure) : Ok(Mapper.Map<TSource, TResult>(callback.Success));
+            return callback.IsSuccess ? Ok(Mapper.Map<TSource, TResult>(callback.Value)) : HandleFailure(callback.Error);
         }
 
         /// <summary>
@@ -48,14 +47,14 @@ namespace robot.WebApi.Base
         /// </summary>
         /// <typeparam name="TSource">Tipo do obj de origem (domínio)</typeparam>
         /// <typeparam name="TResult">Tipo de retorno objQuery</typeparam>
-        /// <param name="callback">List(TSource)</param>
+        /// <param name="callback">Result<List<TSource>></param>
         /// <returns>Result(TResult)</returns>
-        public IActionResult HandleQueryList<TSource, TResult>(Result<Exception, List<TSource>> callback)
+        public IActionResult HandleQueryList<TSource, TResult>(Result<List<TSource>> callback)
         {
-            if (callback.IsFailure)
-                return HandleFailure(callback.Failure);
+            if (!callback.IsSuccess)
+                return HandleFailure(callback.Error);
 
-            var query = callback.Success;
+            var query = callback.Value;
 
             var result = query.AsQueryable().ProjectTo<TResult>(Mapper.ConfigurationProvider);
 

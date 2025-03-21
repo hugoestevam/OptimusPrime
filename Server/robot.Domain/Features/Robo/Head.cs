@@ -37,10 +37,10 @@ namespace robot.Domain.Features.Robo
         /// Método responsável por movimentar o alinhamento da cabeça para cima
         /// </summary>
         /// <returns></returns>
-        public Result<Exception, Align> MoveForUp()
+        public Result<Align> MoveForUp()
         {
             if (Align == Align.Top)
-                return new LimitedHeadMoveException();
+                return Result<Align>.Fail(new LimitedHeadMoveException());
 
             Align = Align + 1;
             return Align;
@@ -50,10 +50,10 @@ namespace robot.Domain.Features.Robo
         /// Método responsável por movimentar o alinhamento da cabeça para baixo
         /// </summary>
         /// <returns></returns>
-        public Result<Exception, Align> MoveToBelow()
+        public Result<Align> MoveToBelow()
         {
             if (Align == Align.Botton)
-                return new LimitedHeadMoveException();
+                return Result<Align>.Fail(new LimitedHeadMoveException());
 
             Align = Align - 1;
             return Align;
@@ -63,10 +63,10 @@ namespace robot.Domain.Features.Robo
         /// Método responsável por rotacionar a cabeça para a esquerda
         /// </summary>
         /// <returns></returns>
-        public Result<Exception, int> RotateToTheLeft()
+        public Result<int> RotateToTheLeft()
         {
             if (Direction == LeftLimit)
-                return new LimitedHeadRotateException();
+                return Result<int>.Fail(new LimitedHeadRotateException());
 
             Direction = Direction + AngleRotate;
             return Direction;
@@ -76,10 +76,10 @@ namespace robot.Domain.Features.Robo
         /// Método responsável por rotacionar a cabeça para a direita
         /// </summary>
         /// <returns></returns>
-        public Result<Exception, int> RotateToTheRight()
+        public Result<int> RotateToTheRight()
         {
             if (Direction == RightLimit)
-                return new LimitedHeadRotateException();
+                return Result<int>.Fail(new LimitedHeadRotateException());
 
             Direction = Direction - AngleRotate;
             return Direction;

@@ -25,25 +25,25 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por rotacionar o punho para a esquerda
         /// </summary>
-        public Result<Exception, int> RotateToTheLeft()
+        public Result<int> RotateToTheLeft()
         {
             if (Direction == LeftLimit)
-                return new LimitedWristRotateException();
+                return Result<int>.Fail(new LimitedWristRotateException());
 
             Direction = Direction + AngleRotate;
-            return Direction;
+            return Result<int>.Success(Direction);
         }
 
         /// <summary>
         /// Método responsável por rotacionar o punho para a direita
         /// </summary>
-        public Result<Exception, int> RotateToTheRight()
+        public Result<int> RotateToTheRight()
         {
             if (Direction == RightLimit)
-                return new LimitedWristRotateException();
+                return Result<int>.Fail(new LimitedWristRotateException());
 
             Direction = Direction - AngleRotate;
-            return Direction;
+            return Result<int>.Success(Direction);
         }
 
         /// <summary>

@@ -27,7 +27,7 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável chamar o movimento da cabeça para cima
         /// </summary>
-        public Result<Exception, Align> MoveHeadForUp()
+        public Result<Align> MoveHeadForUp()
         {
             return Head.MoveForUp();
         }
@@ -35,7 +35,7 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável chamar o movimento da cabeça para baixo
         /// </summary>
-        public Result<Exception, Align> MoveHeadToBelow()
+        public Result<Align> MoveHeadToBelow()
         {
             return Head.MoveToBelow();
         }        
@@ -43,12 +43,12 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável chamar a rotação da cabeça para a esquerda
         /// </summary>        
-        public Result<Exception, int> RotateHeadToTheLeft()
+        public Result<int> RotateHeadToTheLeft()
         {
             if (!CanHeadRotate())
             {
                 Raise(new DeniedHeadRotateEvent(Head, "Left"));
-                return new DeniedHeadRotateException();
+                return Result<int>.Fail(new DeniedHeadRotateException());
             }
 
             return Head.RotateToTheLeft();
@@ -57,12 +57,12 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável chamar a rotação da cabeça para a direita
         /// </summary>        
-        public Result<Exception, int> RotateHeadToTheRight()
+        public Result<int> RotateHeadToTheRight()
         {
             if (!CanHeadRotate())
             {
                 Raise(new DeniedHeadRotateEvent(Head, "Right"));
-                return new DeniedHeadRotateException();
+                return Result<int>.Fail(new DeniedHeadRotateException());
             }
 
             return Head.RotateToTheRight();
@@ -71,7 +71,7 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por chamar a contração do cotovelo esquerdo
         /// </summary>
-        public Result<Exception, int> LeftElbowCollapse()
+        public Result<int> LeftElbowCollapse()
         {
             return LeftElbow.Collapse();
         }
@@ -79,7 +79,7 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por chamar a contração do cotovelo direito
         /// </summary>
-        public Result<Exception, int> RightElbowCollapse()
+        public Result<int> RightElbowCollapse()
         {
             return RightElbow.Collapse();
         }
@@ -87,7 +87,7 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por chamar a extensão do cotovelo esquerdo
         /// </summary>
-        public Result<Exception, int> LeftElbowExpand()
+        public Result<int> LeftElbowExpand()
         {
             if (LeftElbowPosition == 45 && LeftWristDirection != 0)
                 LeftWrist.SetToInitialState();
@@ -98,7 +98,7 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por chamar a extensão do cotovelo direito
         /// </summary>
-        public Result<Exception, int> RightElbowExpand()
+        public Result<int> RightElbowExpand()
         {
             if (RightElbowPosition == 45 && RightWristDirection != 0)
                 RightWrist.SetToInitialState();
@@ -109,10 +109,10 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por chamar a rotação a esquerda do punho esquerdo
         /// </summary>
-        public Result<Exception, int> LeftWristRotateToTheLeft()
+        public Result<int> LeftWristRotateToTheLeft()
         {
             if (!CanWristRotate(LeftElbow))
-                return new DeniedWristRotateException();
+                return Result<int>.Fail(new DeniedWristRotateException());
 
             return LeftWrist.RotateToTheLeft();
         }        
@@ -120,10 +120,10 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por chamar a rotação a direita do punho esquerdo
         /// </summary>
-        public Result<Exception, int> LeftWristRotateToTheRight()
+        public Result<int> LeftWristRotateToTheRight()
         {
             if (!CanWristRotate(LeftElbow))
-                return new DeniedWristRotateException();
+                return Result<int>.Fail(new DeniedWristRotateException());
 
             return LeftWrist.RotateToTheRight();
         }
@@ -131,10 +131,10 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por chamar a rotação a esquerda do punho direito
         /// </summary>
-        public Result<Exception, int> RightWristRotateToTheLeft()
+        public Result<int> RightWristRotateToTheLeft()
         {
             if (!CanWristRotate(RightElbow))
-                return new DeniedWristRotateException();
+                return Result<int>.Fail(new DeniedWristRotateException());
 
             return RightWrist.RotateToTheLeft();
         }
@@ -142,10 +142,10 @@ namespace robot.Domain.Features.Robo
         /// <summary>
         /// Método responsável por chamar a rotação a direita do punho direito
         /// </summary>
-        public Result<Exception, int> RightWristRotateToTheRight()
+        public Result<int> RightWristRotateToTheRight()
         {
             if (!CanWristRotate(RightElbow))
-                return new DeniedWristRotateException();
+                return Result<int>.Fail(new DeniedWristRotateException());
 
             return RightWrist.RotateToTheRight();
         }

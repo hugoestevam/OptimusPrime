@@ -56,7 +56,7 @@ namespace robot.Infra.Data.Test
 
             // Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.RobotId.ShouldNotBe(0);
+            result.Value.RobotId.ShouldNotBe(0);
         }
 
         [Test]
@@ -77,7 +77,7 @@ namespace robot.Infra.Data.Test
 
             // Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.Count.ShouldBe(1);
+            result.Value.Count.ShouldBe(1);
         }
 
         [Test]
@@ -98,7 +98,7 @@ namespace robot.Infra.Data.Test
 
             // Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.RobotId.ShouldBe(1);
+            result.Value.RobotId.ShouldBe(1);
         }
 
         [Test]
@@ -124,10 +124,10 @@ namespace robot.Infra.Data.Test
 
             // Assert
             result.IsSuccess.ShouldBeTrue();
-            result.Success.RobotName.ShouldBe("Updated Robot");
-            result.Success.Status.ShouldBe(RobotStatus.Offline);
-            result.Success.HeadAlign.ShouldBe(Align.Top);
-            result.Success.HeadDirection.ShouldBe(45);
+            result.Value.RobotName.ShouldBe("Updated Robot");
+            result.Value.Status.ShouldBe(RobotStatus.Offline);
+            result.Value.HeadAlign.ShouldBe(Align.Top);
+            result.Value.HeadDirection.ShouldBe(45);
         }
 
         [Test]
@@ -149,8 +149,8 @@ namespace robot.Infra.Data.Test
 
             // Assert
             result.IsSuccess.ShouldBeTrue();
-            resultGet.IsFailure.ShouldBeTrue();
-            resultGet.Failure.ShouldBeOfType<NotFoundException>();
+            resultGet.IsSuccess.ShouldBeFalse();
+            resultGet.Error.ShouldBeOfType<NotFoundException>();
         }
     }
 }
